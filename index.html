@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CareerOS — by TechDeb</title>
+<title>CareerOS — by CyberDebrup</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -28,12 +28,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;cursor:none}
-
-/* CUSTOM CURSOR */
-#cursor{position:fixed;width:12px;height:12px;background:var(--cy);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:screen}
-#cursor-trail{position:fixed;width:36px;height:36px;border:1px solid rgba(6,182,212,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .12s ease,top .12s ease,width .3s,height .3s}
-body:has(button:hover) #cursor,body:has(a:hover) #cursor{width:20px;height:20px;background:var(--vl)}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;cursor:default}
 
 /* CANVAS BG */
 #bgCanvas{position:fixed;inset:0;z-index:0;opacity:0.6}
@@ -58,11 +53,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.9rem 2.5rem;display
 .hero-title .line2{display:block;background:linear-gradient(135deg,var(--v) 0%,var(--cy) 40%,var(--gr) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 30px rgba(124,58,237,0.5))}
 .hero-sub{font-size:1.05rem;color:var(--mu);max-width:500px;line-height:1.75;margin-bottom:3rem;animation:fadeUp .7s ease .2s both}
 .cta-group{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s ease .3s both}
-.btn-main{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--v),var(--vl));color:#fff;border:none;border-radius:14px;padding:.9rem 2.2rem;font-size:.95rem;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:none;transition:all .3s;box-shadow:0 0 30px rgba(124,58,237,0.4),0 4px 20px rgba(0,0,0,0.4)}
+.btn-main{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--v),var(--vl));color:#fff;border:none;border-radius:14px;padding:.9rem 2.2rem;font-size:.95rem;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all .3s;box-shadow:0 0 30px rgba(124,58,237,0.4),0 4px 20px rgba(0,0,0,0.4)}
 .btn-main::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent);opacity:0;transition:opacity .3s}
 .btn-main:hover{transform:translateY(-3px);box-shadow:0 0 60px rgba(124,58,237,0.6),0 8px 30px rgba(0,0,0,0.5)}
 .btn-main:hover::before{opacity:1}
-.btn-outline{background:transparent;border:1px solid var(--bd2);color:var(--tx);border-radius:14px;padding:.9rem 2rem;font-size:.95rem;font-weight:500;cursor:none;transition:all .3s;font-family:'Space Grotesk',sans-serif}
+.btn-outline{background:transparent;border:1px solid var(--bd2);color:var(--tx);border-radius:14px;padding:.9rem 2rem;font-size:.95rem;font-weight:500;cursor:pointer;transition:all .3s;font-family:'Space Grotesk',sans-serif}
 .btn-outline:hover{border-color:var(--cy);color:var(--cyl);box-shadow:0 0 20px rgba(6,182,212,0.2)}
 
 /* FLOATING STATS */
@@ -135,7 +130,7 @@ textarea{resize:vertical;min-height:90px}
 
 /* CHIP GRID */
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:.65rem}
-.chip{border:1px solid var(--bd);border-radius:12px;padding:.65rem .9rem;font-size:.82rem;cursor:none;transition:all .25s;text-align:center;background:rgba(255,255,255,0.02);font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--mu);position:relative;overflow:hidden}
+.chip{border:1px solid var(--bd);border-radius:12px;padding:.65rem .9rem;font-size:.82rem;cursor:pointer;transition:all .25s;text-align:center;background:rgba(255,255,255,0.02);font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--mu);position:relative;overflow:hidden}
 .chip::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(6,182,212,0.05));opacity:0;transition:opacity .3s}
 .chip:hover{border-color:rgba(124,58,237,0.4);color:var(--tx)}
 .chip:hover::after{opacity:1}
@@ -144,14 +139,14 @@ textarea{resize:vertical;min-height:90px}
 
 /* NAV BTNS */
 .fnav{display:flex;justify-content:space-between;align-items:center;margin-top:2.5rem}
-.btn-next{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--v),var(--cy));color:var(--bg);border:none;border-radius:12px;padding:.85rem 2rem;font-size:.92rem;font-weight:800;cursor:none;transition:all .3s;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:.5rem;box-shadow:0 0 25px rgba(124,58,237,0.35)}
+.btn-next{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--v),var(--cy));color:var(--bg);border:none;border-radius:12px;padding:.85rem 2rem;font-size:.92rem;font-weight:800;cursor:pointer;transition:all .3s;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:.5rem;box-shadow:0 0 25px rgba(124,58,237,0.35)}
 .btn-next:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(124,58,237,0.5)}
-.btn-back{background:transparent;border:1px solid var(--bd);color:var(--mu);border-radius:12px;padding:.85rem 1.6rem;font-size:.88rem;cursor:none;transition:all .25s;font-family:'Space Grotesk',sans-serif;font-weight:600}
+.btn-back{background:transparent;border:1px solid var(--bd);color:var(--mu);border-radius:12px;padding:.85rem 1.6rem;font-size:.88rem;cursor:pointer;transition:all .25s;font-family:'Space Grotesk',sans-serif;font-weight:600}
 .btn-back:hover{border-color:var(--mu);color:var(--tx)}
 
 /* TOGGLE */
 .trow{display:flex;align-items:center;gap:1rem;margin:.5rem 0}
-.tog{width:46px;height:26px;background:rgba(255,255,255,0.08);border-radius:13px;cursor:none;position:relative;transition:background .3s;border:1px solid var(--bd);flex-shrink:0}
+.tog{width:46px;height:26px;background:rgba(255,255,255,0.08);border-radius:13px;cursor:pointer;position:relative;transition:background .3s;border:1px solid var(--bd);flex-shrink:0}
 .tog.on{background:var(--v);border-color:var(--v);box-shadow:0 0 15px rgba(124,58,237,0.5)}
 .tok{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .3s;box-shadow:0 2px 6px rgba(0,0,0,0.4)}
 .tog.on .tok{left:22px}
@@ -279,10 +274,6 @@ footer a:hover{text-decoration:underline}
 </head>
 <body>
 
-<!-- CURSOR -->
-<div id="cursor"></div>
-<div id="cursor-trail"></div>
-
 <!-- SCROLL BAR -->
 <div id="sbar"></div>
 
@@ -313,22 +304,85 @@ footer a:hover{text-decoration:underline}
 
 <!-- HERO -->
 <section class="hero" id="top">
-  <div class="hero-eyebrow">AI Career Intelligence · Open to all backgrounds · 18+</div>
-  <h1 class="hero-title">
-    Your dream job is<br>
-    <span class="line2 glitch" data-text="engineered here.">engineered here.</span>
-  </h1>
-  <p class="hero-sub">Upload your CV, choose your target, get an ATS-perfect resume and a 30-day roadmap — powered by AI, built for <em>you</em>.</p>
-  <div class="cta-group">
-    <button class="btn-main" onclick="scrollToForm()">Start Building →</button>
-    <button class="btn-outline" onclick="document.getElementById('backendAnchor').scrollIntoView({behavior:'smooth'})">How it works</button>
+
+  <!-- TOP BADGE -->
+  <div class="hero-eyebrow" style="animation:fadeUp .5s ease both">
+    <span>🤖 AI-Powered Career Engine</span>
+    <span style="width:1px;height:12px;background:rgba(6,182,212,0.3);display:inline-block"></span>
+    <span style="color:var(--gr)">Live</span>
   </div>
-  <div class="hero-stats">
+
+  <!-- MAIN HEADLINE -->
+  <div style="position:relative;margin-bottom:1.8rem;animation:fadeUp .6s ease .1s both">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(1rem,2vw,1.1rem);font-weight:500;color:var(--mu);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.8rem;font-family:'JetBrains Mono',monospace">// Your career. Optimised.</div>
+    <h1 class="hero-title" style="margin-bottom:0">
+      Turn your CV into<br>
+      <span class="line2 glitch" data-text="your dream offer.">your dream offer.</span>
+    </h1>
+  </div>
+
+  <p class="hero-sub" style="animation:fadeUp .6s ease .2s both">Upload your CV or enter your skills. Pick your target role. Get an ATS-perfect resume scored 100/100 and a 30-day action plan — in under 60 seconds.</p>
+
+  <!-- CTA -->
+  <div class="cta-group" style="animation:fadeUp .6s ease .3s both">
+    <button class="btn-main" onclick="scrollToForm()">
+      <span>Analyse My CV</span>
+      <span style="font-size:1.1rem">→</span>
+    </button>
+    <button class="btn-outline" onclick="scrollToForm()">See how it works ↓</button>
+  </div>
+
+  <!-- FLOATING TERMINAL CARD -->
+  <div style="animation:fadeUp .7s ease .4s both;margin-top:4rem;width:100%;max-width:680px">
+    <div style="background:rgba(5,8,16,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;backdrop-filter:blur(30px);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 60px rgba(124,58,237,0.1)">
+      <!-- Terminal header -->
+      <div style="background:rgba(255,255,255,0.04);padding:.75rem 1.2rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid rgba(255,255,255,0.06)">
+        <span style="width:10px;height:10px;border-radius:50%;background:#f43f5e;display:inline-block"></span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block"></span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block"></span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:rgba(241,245,249,0.3);margin-left:.5rem">careeros — ai-analysis</span>
+      </div>
+      <!-- Terminal body -->
+      <div style="padding:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:2;text-align:left">
+        <div><span style="color:var(--gr)">$</span> <span style="color:var(--mu)">careeros</span> <span style="color:var(--cyl)">--analyse</span> <span style="color:var(--vll)">cv.pdf</span> <span style="color:var(--cyl)">--role</span> <span style="color:var(--vll)">"Software Engineer"</span></div>
+        <div style="color:rgba(241,245,249,0.25)">────────────────────────────────────</div>
+        <div><span style="color:var(--cy)">✓</span> <span style="color:var(--mu)">CV parsed</span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--gr)">312 tokens extracted</span></div>
+        <div><span style="color:var(--cy)">✓</span> <span style="color:var(--mu)">Role requirements loaded</span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--vll)">Software Engineer @ FAANG</span></div>
+        <div><span style="color:var(--cy)">✓</span> <span style="color:var(--mu)">Skill gap analysis</span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--yw)">4 gaps found</span></div>
+        <div><span style="color:var(--cy)">✓</span> <span style="color:var(--mu)">ATS optimisation</span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--gr)">Score: 100/100</span></div>
+        <div style="color:rgba(241,245,249,0.25)">────────────────────────────────────</div>
+        <div><span style="color:var(--gr)">→</span> <span style="color:var(--tx)">Match: <strong style="color:var(--vll)">78%</strong></span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--tx)">30-day plan ready</span> <span style="color:var(--cy)">█</span><span id="termCursor" style="animation:blink .8s infinite;color:var(--cy)">_</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURE PILLS ROW -->
+  <div style="display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:3rem;animation:fadeUp .7s ease .5s both">
+    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
+      <span style="color:var(--gr)">✓</span> All education levels
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
+      <span style="color:var(--gr)">✓</span> Freshers welcome
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
+      <span style="color:var(--gr)">✓</span> 100% ATS Score
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
+      <span style="color:var(--gr)">✓</span> 30-Day Roadmap
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
+      <span style="color:var(--gr)">✓</span> Free forever
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="hero-stats" style="margin-top:3rem">
     <div class="hstat"><div class="hstat-n">10K+</div><div class="hstat-l">CVs Optimised</div></div>
     <div class="hstat"><div class="hstat-n">97%</div><div class="hstat-l">ATS Pass Rate</div></div>
     <div class="hstat"><div class="hstat-n">30 Days</div><div class="hstat-l">Avg. Placement</div></div>
-    <div class="hstat"><div class="hstat-n">Free</div><div class="hstat-l">Always</div></div>
+    <div class="hstat"><div class="hstat-n">18+</div><div class="hstat-l">All Ages Welcome</div></div>
   </div>
+
 </section>
 
 <!-- FORM -->
@@ -473,54 +527,25 @@ footer a:hover{text-decoration:underline}
     <button class="btn-main" style="margin-top:2rem" onclick="dlCV()">⬇ Download CV</button>
   </div>
 
-  <div class="sec-tag" id="backendAnchor" style="margin-top:5rem">30-Day Roadmap</div>
+  <div class="sec-tag" style="margin-top:5rem">30-Day Roadmap</div>
   <h2 class="sec-h" style="font-size:1.6rem">Your Personalised Plan</h2>
   <p class="sec-p" style="margin-bottom:2.5rem">Four weeks. Four phases. Zero guesswork.</p>
   <div class="rm" id="rmout"></div>
 
-  <div class="sec-tag" style="margin-top:5rem">Tech Stack</div>
-  <h2 class="sec-h" style="font-size:1.6rem">What Powers CareerOS</h2>
-  <p class="sec-p">Transparent by design — here's every layer of the stack.</p>
-
-  <div class="bgrid" style="margin-bottom:3rem">
-    <div class="bcard"><div class="bic">🧠</div><div class="bnm">AI / LLM Engine</div><div class="bdc">Claude API (Anthropic) via <code>/v1/messages</code> — CV parsing, ATS generation, skill gap analysis, roadmap creation.</div><span class="tb">claude-sonnet-4-6</span></div>
-    <div class="bcard"><div class="bic">📄</div><div class="bnm">CV Parsing</div><div class="bdc">PDF.js + mammoth.js extract text client-side. Your CV never leaves your device — 100% private.</div><span class="tb">pdf.js + mammoth.js</span></div>
-    <div class="bcard"><div class="bic">⚙️</div><div class="bnm">Backend Server</div><div class="bdc">Node.js + Express handles API routing, rate limiting, and Claude API key management securely server-side.</div><span class="tb">Node.js + Express</span></div>
-    <div class="bcard"><div class="bic">🗄️</div><div class="bnm">Database</div><div class="bdc">MongoDB Atlas stores profiles. Redis caches frequent ATS templates for instant results.</div><span class="tb">MongoDB + Redis</span></div>
-    <div class="bcard"><div class="bic">🔒</div><div class="bnm">Auth & Security</div><div class="bdc">Magic link email auth. JWT tokens. Helmet.js HTTP headers. All data encrypted at rest.</div><span class="tb">JWT + Helmet.js</span></div>
-    <div class="bcard"><div class="bic">☁️</div><div class="bnm">Hosting</div><div class="bdc">Frontend on Vercel (CDN). Backend on Railway. Files on AWS S3. SSL via Let's Encrypt.</div><span class="tb">Vercel + Railway</span></div>
+  <div style="margin-top:3rem;text-align:center">
+    <button class="btn-main" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Start Over</button>
   </div>
-
-  <div class="sec-tag">Deploy Guide</div>
-  <h2 class="sec-h" style="font-size:1.6rem">Go Live in 6 Steps</h2>
-  <div class="gcard" style="margin-bottom:3rem">
-    <div class="dstep"><div class="dnum">1</div><div class="dtx"><strong>Get a Domain</strong><br>Go to <a href="https://namecheap.com" target="_blank" style="color:var(--cy)">Namecheap</a> or <a href="https://domains.google" target="_blank" style="color:var(--cy)">Google Domains</a>. A <span class="ci">.dev</span> or <span class="ci">.tech</span> domain costs ~₹800–₹1500/year and looks sharp for dev projects.</div></div>
-    <div class="dstep"><div class="dnum">2</div><div class="dtx"><strong>Push to GitHub</strong><br>Create a repo → <span class="ci">git init</span> → <span class="ci">git add .</span> → <span class="ci">git commit -m "init"</span> → <span class="ci">git push origin main</span></div></div>
-    <div class="dstep"><div class="dnum">3</div><div class="dtx"><strong>Deploy Frontend on Vercel</strong><br>Go to <a href="https://vercel.com" target="_blank" style="color:var(--cy)">vercel.com</a> → Import GitHub repo → Click Deploy. ~60 seconds. Add custom domain in Settings → Domains.</div></div>
-    <div class="dstep"><div class="dnum">4</div><div class="dtx"><strong>Deploy Backend on Railway</strong><br>Go to <a href="https://railway.app" target="_blank" style="color:var(--cy)">railway.app</a> → New Project → Deploy from GitHub. Add: <span class="ci">ANTHROPIC_API_KEY</span>, <span class="ci">MONGODB_URI</span>, <span class="ci">JWT_SECRET</span>.</div></div>
-    <div class="dstep"><div class="dnum">5</div><div class="dtx"><strong>Get Anthropic API Key</strong><br>Sign up at <a href="https://console.anthropic.com" target="_blank" style="color:var(--cy)">console.anthropic.com</a> → API Keys → Create. Add to Railway env only — never in frontend code.</div></div>
-    <div class="dstep"><div class="dnum">6</div><div class="dtx"><strong>Connect & Go Live 🎉</strong><br>Add CNAME record in domain registrar: <span class="ci">www</span> → <span class="ci">cname.vercel-dns.com</span>. Vercel auto-configures SSL. You're live!</div></div>
-  </div>
-
-  <button class="btn-main" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Start Over</button>
 </section>
 
 <footer>
   <div class="flogo">⚡ CareerOS</div>
-  <div style="margin-bottom:.5rem">Copyright © 2026 <strong style="color:var(--vll)">TechDeb</strong> · All rights reserved · Built with ❤️ for every background</div>
+  <div style="margin-bottom:.5rem">Copyright © 2026 <a href="https://github.com/cyberdebrup" target="_blank" style="color:var(--vll);text-decoration:none;font-weight:700">CyberDebrup</a> · All rights reserved · Built with ❤️ for every background</div>
   <div style="margin-top:.75rem;font-size:.68rem;color:rgba(241,245,249,0.15)">Unauthorised reproduction or redistribution strictly prohibited.</div>
 </footer>
 
 <script>
 /* ═══════════════ STATE ═══════════════ */
 let step=1, tags=[], selRole='', selCo='', isFresh=false, cvText='', uploadedName='';
-
-/* ═══════════════ CURSOR ═══════════════ */
-const cur=document.getElementById('cursor'), trail=document.getElementById('cursor-trail');
-document.addEventListener('mousemove',e=>{
-  cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px';
-  setTimeout(()=>{trail.style.left=e.clientX+'px';trail.style.top=e.clientY+'px'},80);
-});
 
 /* ═══════════════ SCROLL ═══════════════ */
 window.addEventListener('scroll',()=>{
@@ -738,7 +763,7 @@ function dlCV(){
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;max-width:740px;margin:40px auto;color:#111;line-height:1.7;padding:0 24px}h1{font-size:22px;color:#7C3AED;border-bottom:3px solid #7C3AED;padding-bottom:8px;margin-bottom:4px}.rl{font-size:12px;color:#555;margin-bottom:24px}.ab{display:inline-block;background:#f0fdf4;border:1px solid #86efac;color:#166534;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:700;margin-bottom:20px}.cvb{margin-bottom:18px;padding:14px 18px;border:1px solid #eee;border-radius:10px;position:relative}.cvb::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#7C3AED,#06b6d4);border-radius:3px 0 0 3px}.cvbt{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7C3AED;font-weight:700;margin-bottom:8px;font-family:monospace}.cvl{font-size:13px;color:#222;line-height:1.65}.cvbul{padding:4px 0 4px 14px;border-left:2px solid #c4b5fd;margin-bottom:5px;font-size:13px;color:#333}.footer{margin-top:40px;padding-top:14px;border-top:1px solid #eee;font-size:10px;color:#aaa;text-align:center}.no-print{text-align:center;margin-top:24px}@media print{.no-print{display:none}body{margin:20px}}</style></head><body>
 <h1>${name}</h1><div class="rl">Target Role: ${role}</div><div class="ab">✦ ATS Score: 100 / 100</div>
 ${cvHtml}
-<div class="footer">Generated by CareerOS &nbsp;·&nbsp; Copyright © 2026 TechDeb. All rights reserved.</div>
+<div class="footer">Generated by CareerOS &nbsp;·&nbsp; Copyright © 2026 CyberDebrup. All rights reserved.</div>
 <div class="no-print"><button onclick="window.print()" style="background:#7C3AED;color:#fff;border:none;padding:10px 28px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700;box-shadow:0 0 20px rgba(124,58,237,0.4)">🖨 Print / Save as PDF</button></div>
 </body></html>`;
   const blob=new Blob([html],{type:'text/html;charset=utf-8'});
