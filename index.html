@@ -1,777 +1,446 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CareerOS — by CyberDebrup</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
-:root {
-  --bg: #050810;
-  --bg2: #080c18;
-  --v: #7C3AED;
-  --vl: #a855f7;
-  --vll: #c084fc;
-  --cy: #06b6d4;
-  --cyl: #22d3ee;
-  --gr: #10b981;
-  --pk: #f43f5e;
-  --yw: #f59e0b;
-  --tx: #f1f5f9;
-  --mu: rgba(241,245,249,0.45);
-  --mu2: rgba(241,245,249,0.2);
-  --mu3: rgba(241,245,249,0.08);
-  --bd: rgba(255,255,255,0.07);
-  --bd2: rgba(255,255,255,0.12);
-  --gv: 0 0 40px rgba(124,58,237,0.4);
-  --gc: 0 0 40px rgba(6,182,212,0.4);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;cursor:default}
-
-/* CANVAS BG */
-#bgCanvas{position:fixed;inset:0;z-index:0;opacity:0.6}
-
-/* SCROLL BAR */
-#sbar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--v),var(--cy),var(--gr));z-index:200;transform-origin:left;transform:scaleX(0);transition:transform .05s}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.9rem 2.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(5,8,16,0.7);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd)}
-.nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.15rem;background:linear-gradient(135deg,var(--vll),var(--cyl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em;display:flex;align-items:center;gap:.5rem}
-.nav-logo span{font-size:.85rem;-webkit-text-fill-color:rgba(6,182,212,0.7);font-weight:400;font-family:'JetBrains Mono',monospace}
-.nav-right{display:flex;align-items:center;gap:1rem}
-.nav-pill{background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);border-radius:999px;padding:.3rem .9rem;font-size:.72rem;color:var(--vll);font-family:'JetBrains Mono',monospace;font-weight:500}
-.nav-dot{width:8px;height:8px;background:var(--gr);border-radius:50%;animation:blink 2s infinite;box-shadow:0 0 8px var(--gr)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 1.5rem 5rem;position:relative;z-index:1}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);border-radius:999px;padding:.45rem 1.2rem;font-size:.78rem;color:var(--cyl);margin-bottom:2.5rem;font-family:'JetBrains Mono',monospace;animation:fadeUp .6s ease both}
-.hero-eyebrow::before{content:'';width:6px;height:6px;background:var(--cy);border-radius:50%;animation:blink 1.5s infinite;box-shadow:0 0 6px var(--cy)}
-.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.5rem;animation:fadeUp .7s ease .1s both}
-.hero-title .line2{display:block;background:linear-gradient(135deg,var(--v) 0%,var(--cy) 40%,var(--gr) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 30px rgba(124,58,237,0.5))}
-.hero-sub{font-size:1.05rem;color:var(--mu);max-width:500px;line-height:1.75;margin-bottom:3rem;animation:fadeUp .7s ease .2s both}
-.cta-group{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s ease .3s both}
-.btn-main{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--v),var(--vl));color:#fff;border:none;border-radius:14px;padding:.9rem 2.2rem;font-size:.95rem;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all .3s;box-shadow:0 0 30px rgba(124,58,237,0.4),0 4px 20px rgba(0,0,0,0.4)}
-.btn-main::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent);opacity:0;transition:opacity .3s}
-.btn-main:hover{transform:translateY(-3px);box-shadow:0 0 60px rgba(124,58,237,0.6),0 8px 30px rgba(0,0,0,0.5)}
-.btn-main:hover::before{opacity:1}
-.btn-outline{background:transparent;border:1px solid var(--bd2);color:var(--tx);border-radius:14px;padding:.9rem 2rem;font-size:.95rem;font-weight:500;cursor:pointer;transition:all .3s;font-family:'Space Grotesk',sans-serif}
-.btn-outline:hover{border-color:var(--cy);color:var(--cyl);box-shadow:0 0 20px rgba(6,182,212,0.2)}
-
-/* FLOATING STATS */
-.hero-stats{display:flex;gap:0;margin-top:5rem;animation:fadeUp .7s ease .45s both;border:1px solid var(--bd);border-radius:18px;overflow:hidden;backdrop-filter:blur(20px);background:rgba(255,255,255,0.02)}
-.hstat{padding:1.4rem 2.5rem;text-align:center;border-right:1px solid var(--bd);transition:background .3s}
-.hstat:last-child{border-right:none}
-.hstat:hover{background:rgba(124,58,237,0.08)}
-.hstat-n{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--cy),var(--gr));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hstat-l{font-size:.72rem;color:var(--mu2);margin-top:.2rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-
-/* SECTION */
-.sec{position:relative;z-index:1;padding:5rem 1.5rem;max-width:900px;margin:0 auto}
-.sec-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cy);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
-.sec-tag::before{content:'//';color:var(--mu2)}
-.sec-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.7rem,4vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:.75rem;letter-spacing:-.02em}
-.sec-p{color:var(--mu);font-size:.95rem;line-height:1.7;max-width:520px;margin-bottom:3rem}
-
-/* STEP TRACK */
-.steps{display:flex;align-items:center;margin-bottom:3rem;gap:0;overflow-x:auto;padding-bottom:.5rem}
-.si{display:flex;align-items:center;gap:.6rem;font-size:.78rem;font-weight:600;color:var(--mu2);white-space:nowrap;font-family:'Space Grotesk',sans-serif;transition:color .3s;cursor:default}
-.si.active{color:var(--cyl)}
-.si.done{color:var(--gr)}
-.snum{width:30px;height:30px;border-radius:10px;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;transition:all .3s;font-family:'JetBrains Mono',monospace}
-.si.active .snum{background:linear-gradient(135deg,var(--cy),var(--v));border-color:transparent;color:var(--bg);box-shadow:0 0 16px rgba(6,182,212,0.5)}
-.si.done .snum{background:var(--gr);border-color:var(--gr);color:var(--bg);box-shadow:0 0 12px rgba(16,185,129,0.4)}
-.sl{flex:1;height:1px;background:var(--bd);min-width:20px;margin:0 .5rem;transition:background .4s}
-.sl.done{background:linear-gradient(90deg,var(--gr),var(--cy))}
-
-/* GLASS CARD */
-.gcard{background:rgba(255,255,255,0.03);border:1px solid var(--bd);border-radius:24px;padding:2.5rem;backdrop-filter:blur(30px);position:relative;overflow:hidden;transition:border-color .4s}
-.gcard::before{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(124,58,237,0.06),transparent 40%);pointer-events:none;transition:opacity .3s}
-.gcard:hover{border-color:rgba(124,58,237,0.25)}
-
-/* FORM */
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.fg .s2{grid-column:span 2}
-@media(max-width:600px){.fg{grid-template-columns:1fr}.fg .s2{grid-column:span 1}}
-.fl{display:flex;flex-direction:column;gap:.5rem}
-.fl label{font-size:.75rem;font-weight:600;color:var(--mu);font-family:'Space Grotesk',sans-serif;letter-spacing:.04em;text-transform:uppercase}
-input,select,textarea{background:rgba(255,255,255,0.04);border:1px solid var(--bd);border-radius:12px;padding:.8rem 1.1rem;color:var(--tx);font-size:.9rem;font-family:'Inter',sans-serif;outline:none;transition:all .25s;width:100%;-webkit-appearance:none}
-input::placeholder,textarea::placeholder{color:var(--mu2)}
-input:focus,select:focus,textarea:focus{border-color:var(--v);box-shadow:0 0 0 3px rgba(124,58,237,0.15),0 0 20px rgba(124,58,237,0.1)}
-select option{background:#0d1120}
-textarea{resize:vertical;min-height:90px}
-
-/* UPLOAD */
-.upzone{border:2px dashed rgba(124,58,237,0.3);border-radius:16px;padding:3rem 1.5rem;text-align:center;cursor:none;transition:all .3s;background:rgba(124,58,237,0.03);position:relative}
-.upzone:hover,.upzone.drag{border-color:var(--v);background:rgba(124,58,237,0.08);box-shadow:0 0 30px rgba(124,58,237,0.15)}
-.upzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:none;background:none;padding:0}
-.up-icon{font-size:3rem;margin-bottom:1rem;filter:drop-shadow(0 0 12px rgba(124,58,237,0.6))}
-.up-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.4rem}
-.up-sub{font-size:.78rem;color:var(--mu2)}
-.up-ok{margin-top:1rem;padding:.6rem 1rem;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;font-size:.82rem;color:var(--gr);display:inline-flex;align-items:center;gap:.5rem}
-
-/* DIVIDER */
-.div{display:flex;align-items:center;gap:1rem;margin:1.8rem 0}
-.div-l{flex:1;height:1px;background:var(--bd)}
-.div-t{font-size:.72rem;color:var(--mu2);white-space:nowrap;font-family:'JetBrains Mono',monospace}
-
-/* TAGS */
-.tagbox{display:flex;flex-wrap:wrap;gap:.5rem;padding:.75rem;border:1px solid var(--bd);border-radius:12px;background:rgba(255,255,255,0.03);min-height:50px;align-items:flex-start;cursor:text;transition:border-color .25s}
-.tagbox:focus-within{border-color:var(--v);box-shadow:0 0 0 3px rgba(124,58,237,0.15)}
-.tag{background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.35);border-radius:8px;padding:.22rem .65rem;font-size:.78rem;color:var(--vll);display:flex;align-items:center;gap:.4rem;font-family:'Space Grotesk',sans-serif;font-weight:500}
-.tr{cursor:pointer;opacity:.55;transition:opacity .2s;line-height:1;font-size:.85rem}
-.tr:hover{opacity:1}
-.ti{border:none;background:transparent;outline:none;color:var(--tx);font-size:.88rem;flex:1;min-width:110px;padding:.1rem 0;font-family:'Inter',sans-serif}
-.tags-h{font-size:.72rem;color:var(--mu2);margin-top:.4rem;font-family:'JetBrains Mono',monospace}
-
-/* CHIP GRID */
-.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:.65rem}
-.chip{border:1px solid var(--bd);border-radius:12px;padding:.65rem .9rem;font-size:.82rem;cursor:pointer;transition:all .25s;text-align:center;background:rgba(255,255,255,0.02);font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--mu);position:relative;overflow:hidden}
-.chip::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(6,182,212,0.05));opacity:0;transition:opacity .3s}
-.chip:hover{border-color:rgba(124,58,237,0.4);color:var(--tx)}
-.chip:hover::after{opacity:1}
-.chip.sel{border-color:var(--v);background:rgba(124,58,237,0.15);color:var(--vll);box-shadow:0 0 20px rgba(124,58,237,0.25),inset 0 0 20px rgba(124,58,237,0.05)}
-.chip.sel::after{opacity:1}
-
-/* NAV BTNS */
-.fnav{display:flex;justify-content:space-between;align-items:center;margin-top:2.5rem}
-.btn-next{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--v),var(--cy));color:var(--bg);border:none;border-radius:12px;padding:.85rem 2rem;font-size:.92rem;font-weight:800;cursor:pointer;transition:all .3s;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:.5rem;box-shadow:0 0 25px rgba(124,58,237,0.35)}
-.btn-next:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(124,58,237,0.5)}
-.btn-back{background:transparent;border:1px solid var(--bd);color:var(--mu);border-radius:12px;padding:.85rem 1.6rem;font-size:.88rem;cursor:pointer;transition:all .25s;font-family:'Space Grotesk',sans-serif;font-weight:600}
-.btn-back:hover{border-color:var(--mu);color:var(--tx)}
-
-/* TOGGLE */
-.trow{display:flex;align-items:center;gap:1rem;margin:.5rem 0}
-.tog{width:46px;height:26px;background:rgba(255,255,255,0.08);border-radius:13px;cursor:pointer;position:relative;transition:background .3s;border:1px solid var(--bd);flex-shrink:0}
-.tog.on{background:var(--v);border-color:var(--v);box-shadow:0 0 15px rgba(124,58,237,0.5)}
-.tok{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .3s;box-shadow:0 2px 6px rgba(0,0,0,0.4)}
-.tog.on .tok{left:22px}
-.tl{font-size:.85rem;color:var(--mu)}
-
-/* RESULTS */
-#results{display:none}
-
-/* MATCH RING */
-.mhero{display:flex;flex-direction:column;align-items:center;padding:3rem 2rem;text-align:center;background:radial-gradient(circle at 50% 0%,rgba(124,58,237,0.12),transparent 70%)}
-.ringw{position:relative;width:200px;height:200px;margin-bottom:2rem}
-.rsvg{width:100%;height:100%;transform:rotate(-90deg)}
-.rbg{fill:none;stroke:rgba(255,255,255,0.05);stroke-width:14}
-.rfill{fill:none;stroke:url(#rg);stroke-width:14;stroke-linecap:round;stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset 1.8s cubic-bezier(.34,1.56,.64,1);filter:drop-shadow(0 0 8px rgba(124,58,237,0.6))}
-.rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.rpct{font-family:'Space Grotesk',sans-serif;font-size:2.8rem;font-weight:800;background:linear-gradient(135deg,var(--vll),var(--cyl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-.rlb{font-size:.72rem;color:var(--mu2);margin-top:.3rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
-.mverd{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.6rem}
-.msub{font-size:.88rem;color:var(--mu);max-width:380px}
-
-/* SKILL BARS */
-.sbw{margin-bottom:1.2rem}
-.sbh{display:flex;justify-content:space-between;margin-bottom:.5rem;font-size:.82rem}
-.sbn{font-weight:600}
-.sbp{color:var(--mu)}
-.sbtr{height:8px;background:rgba(255,255,255,0.05);border-radius:999px;overflow:hidden;position:relative}
-.sbfill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--v),var(--cy));width:0%;transition:width 1.4s cubic-bezier(.34,1.56,.64,1);position:relative}
-.sbfill::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:12px;height:12px;background:var(--cyl);border-radius:50%;box-shadow:0 0 10px var(--cy)}
-
-/* ALERTS */
-.al{display:flex;align-items:flex-start;gap:.8rem;padding:1.1rem 1.4rem;border-radius:14px;margin-bottom:1rem}
-.al-w{background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.2)}
-.al-i{background:rgba(6,182,212,0.07);border:1px solid rgba(6,182,212,0.15)}
-.al-ic{flex-shrink:0;font-size:1.1rem}
-.al-tx{font-size:.85rem;color:var(--mu);line-height:1.55}
-.al-tx strong{color:var(--tx)}
-
-/* CV */
-.ats-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:999px;padding:.35rem 1rem;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;color:var(--gr);margin-bottom:2rem}
-.cvb{background:rgba(255,255,255,0.025);border:1px solid var(--bd);border-radius:16px;padding:1.4rem 1.8rem;margin-bottom:1rem;transition:border-color .3s;position:relative;overflow:hidden}
-.cvb::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--v),var(--cy))}
-.cvb:hover{border-color:rgba(124,58,237,0.25)}
-.cvbt{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cy);margin-bottom:.75rem}
-.cvl{font-size:.88rem;line-height:1.65;color:var(--tx)}
-.cvbul{padding:.35rem 0 .35rem 1rem;border-left:2px solid rgba(168,85,247,0.3);margin-bottom:.5rem;font-size:.86rem;color:var(--mu);line-height:1.5}
-.cvbul::before{content:'▸ ';color:var(--vll)}
-
-/* ROADMAP */
-.rm{display:flex;flex-direction:column}
-.wk{display:grid;grid-template-columns:60px 1fr;gap:1.5rem}
-.wsp{display:flex;flex-direction:column;align-items:center}
-.wdt{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:.78rem;flex-shrink:0;z-index:1}
-.w1 .wdt{background:linear-gradient(135deg,var(--v),var(--vl));box-shadow:0 0 20px rgba(124,58,237,0.5)}
-.w2 .wdt{background:linear-gradient(135deg,var(--cy),#0ea5e9);box-shadow:0 0 20px rgba(6,182,212,0.5)}
-.w3 .wdt{background:linear-gradient(135deg,var(--pk),var(--yw));box-shadow:0 0 20px rgba(244,63,94,0.5)}
-.w4 .wdt{background:linear-gradient(135deg,var(--gr),var(--cy));box-shadow:0 0 20px rgba(16,185,129,0.5)}
-.wln{flex:1;width:2px;background:linear-gradient(180deg,var(--bd2),transparent);min-height:24px;margin-top:4px}
-.wcon{padding-bottom:3rem}
-.wtag{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
-.w1 .wtag{color:var(--vll)}.w2 .wtag{color:var(--cyl)}.w3 .wtag{color:var(--pk)}.w4 .wtag{color:var(--gr)}
-.wh{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:.4rem}
-.wg{font-size:.8rem;color:var(--mu2);margin-bottom:.9rem;font-family:'JetBrains Mono',monospace}
-.wtasks{list-style:none}
-.wtasks li{font-size:.85rem;color:var(--mu);padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:flex-start;gap:.6rem;line-height:1.5}
-.wtasks li::before{content:'→';color:var(--mu2);flex-shrink:0;margin-top:.05rem;font-family:'JetBrains Mono',monospace}
-
-/* BACKEND GRID */
-.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-@media(max-width:600px){.bgrid{grid-template-columns:1fr}}
-.bcard{border:1px solid var(--bd);border-radius:16px;padding:1.4rem;background:rgba(255,255,255,0.025);transition:all .3s;position:relative;overflow:hidden}
-.bcard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,rgba(124,58,237,0.08),transparent 60%);pointer-events:none}
-.bcard:hover{border-color:rgba(124,58,237,0.25);transform:translateY(-2px)}
-.bic{font-size:1.8rem;margin-bottom:.75rem}
-.bnm{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:.4rem}
-.bdc{font-size:.8rem;color:var(--mu);line-height:1.55}
-.tb{display:inline-block;margin-top:.6rem;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);border-radius:6px;padding:.15rem .55rem;font-size:.68rem;font-family:'JetBrains Mono',monospace;color:var(--vll);font-weight:600}
-
-/* DEPLOY */
-.dstep{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.5rem}
-.dnum{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--v),var(--cy));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:.8rem;color:var(--bg);flex-shrink:0;box-shadow:0 0 15px rgba(124,58,237,0.4)}
-.dtx{font-size:.88rem;line-height:1.65;color:var(--mu)}
-.dtx strong{color:var(--cyl);font-family:'Space Grotesk',sans-serif}
-.ci{background:rgba(255,255,255,0.08);border-radius:6px;padding:.1rem .45rem;font-family:'JetBrains Mono',monospace;font-size:.82em;color:var(--gr)}
-
-/* LOADING */
-.lov{display:none;position:fixed;inset:0;z-index:999;background:rgba(5,8,16,0.95);backdrop-filter:blur(20px);align-items:center;justify-content:center;flex-direction:column;gap:2rem}
-.lov.show{display:flex}
-.lring{width:64px;height:64px;border-radius:50%;border:3px solid transparent;border-top-color:var(--v);border-right-color:var(--cy);animation:spin 1s linear infinite;box-shadow:0 0 30px rgba(124,58,237,0.4)}
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+.app{font-family:'Inter',sans-serif;min-height:600px;background:var(--color-background-tertiary);padding:0}
+.header{background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary);padding:18px 28px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.5px}
+.brand span{color:#7C3AED}
+.badge{font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;background:#7C3AED18;color:#7C3AED;border:0.5px solid #7C3AED40}
+.steps-bar{display:flex;gap:0;background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary);padding:0 28px}
+.step-tab{padding:12px 0;margin-right:28px;font-size:13px;font-weight:500;color:var(--color-text-secondary);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all 0.2s}
+.step-tab.active{color:#7C3AED;border-bottom-color:#7C3AED}
+.step-tab.done{color:var(--color-text-secondary)}
+.step-num{display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--color-background-secondary);align-items:center;justify-content:center;font-size:11px;margin-right:6px;transition:all 0.2s}
+.step-tab.active .step-num{background:#7C3AED;color:#fff}
+.step-tab.done .step-num{background:#A3E635;color:#1a2e05}
+.main{padding:28px}
+.screen{display:none}
+.screen.active{display:block}
+.hero-text{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--color-text-primary);letter-spacing:-1px;line-height:1.1;margin-bottom:6px}
+.hero-sub{font-size:14px;color:var(--color-text-secondary);margin-bottom:24px;line-height:1.5}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:20px}
+.card+.card{margin-top:12px}
+.label{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.seg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.seg-btn{padding:14px 12px;border-radius:var(--border-radius-md);border:1.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Inter',sans-serif}
+.seg-btn:hover{border-color:#7C3AED80;background:#7C3AED08}
+.seg-btn.sel{border-color:#7C3AED;background:#7C3AED0f}
+.seg-btn .ico{font-size:22px;display:block;margin-bottom:4px}
+.seg-btn .lbl{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.inp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.inp-row.full{grid-template-columns:1fr}
+.inp-wrap label{font-size:12px;font-weight:500;color:var(--color-text-secondary);display:block;margin-bottom:5px}
+.inp-wrap input,.inp-wrap select,.inp-wrap textarea{width:100%;padding:10px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);font-family:'Inter',sans-serif;transition:border 0.2s;outline:none}
+.inp-wrap input:focus,.inp-wrap select:focus,.inp-wrap textarea:focus{border-color:#7C3AED;box-shadow:0 0 0 3px #7C3AED18}
+.inp-wrap textarea{resize:vertical;min-height:80px;line-height:1.5}
+.upload-box{border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--color-background-secondary)}
+.upload-box:hover{border-color:#7C3AED;background:#7C3AED08}
+.upload-box.has-file{border-color:#A3E635;background:#A3E63510;border-style:solid}
+.upload-ico{font-size:28px;color:var(--color-text-secondary);margin-bottom:8px}
+.upload-txt{font-size:13px;color:var(--color-text-secondary)}
+.upload-txt strong{color:var(--color-text-primary)}
+.or-div{text-align:center;position:relative;margin:14px 0}
+.or-div::before{content:'';position:absolute;top:50%;left:0;right:0;height:0.5px;background:var(--color-border-tertiary)}
+.or-div span{position:relative;background:var(--color-background-primary);padding:0 10px;font-size:12px;color:var(--color-text-secondary)}
+.keywords-area{display:flex;flex-wrap:wrap;gap:6px;padding:10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);min-height:48px;cursor:text;background:var(--color-background-primary)}
+.kw-tag{background:#7C3AED18;color:#7C3AED;border:0.5px solid #7C3AED40;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:5px}
+.kw-tag .rm{cursor:pointer;color:#7C3AED;font-size:14px;line-height:1}
+.kw-input{border:none;outline:none;font-size:13px;background:transparent;color:var(--color-text-primary);min-width:100px;font-family:'Inter',sans-serif}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s;font-family:'Inter',sans-serif}
+.btn-primary{background:#7C3AED;color:#fff}
+.btn-primary:hover{background:#6D28D9;transform:translateY(-1px)}
+.btn-primary:active{transform:scale(0.98)}
+.btn-ghost{background:transparent;color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary)}
+.btn-ghost:hover{background:var(--color-background-secondary)}
+.btn-lime{background:#A3E635;color:#1a2e05;font-weight:700}
+.btn-lime:hover{background:#84CC16;transform:translateY(-1px)}
+.btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.company-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.co-btn{padding:12px 10px;border-radius:var(--border-radius-md);border:1.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);cursor:pointer;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-primary);transition:all 0.15s}
+.co-btn:hover{border-color:#7C3AED80;background:#7C3AED08}
+.co-btn.sel{border-color:#7C3AED;background:#7C3AED0f;color:#7C3AED}
+.role-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);cursor:pointer;font-size:13px;font-weight:500;color:var(--color-text-primary);transition:all 0.15s}
+.chip:hover{border-color:#7C3AED60;background:#7C3AED08}
+.chip.sel{border-color:#7C3AED;background:#7C3AED12;color:#7C3AED}
+.loading-screen{text-align:center;padding:48px 20px}
+.spinner{width:48px;height:48px;border:3px solid var(--color-border-tertiary);border-top-color:#7C3AED;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 20px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ltx{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;color:var(--mu)}
-.lsub{font-size:.82rem;color:var(--mu2);font-family:'JetBrains Mono',monospace}
-.lbar{width:280px;height:3px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden}
-.lbfill{height:100%;width:0%;background:linear-gradient(90deg,var(--v),var(--cy));border-radius:999px;transition:width .4s ease;animation:lbani 4s ease-in-out infinite}
-@keyframes lbani{0%{width:0%}60%{width:85%}100%{width:95%}}
-
-/* FOOTER */
-footer{position:relative;z-index:1;border-top:1px solid var(--bd);padding:2.5rem 1.5rem;text-align:center;font-size:.78rem;color:var(--mu2)}
-.flogo{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.1rem;background:linear-gradient(135deg,var(--vll),var(--cyl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.6rem}
-footer a{color:var(--cy);text-decoration:none}
-footer a:hover{text-decoration:underline}
-
-/* RESPONSIVE */
-@media(max-width:700px){nav{padding:.7rem 1rem}.sec{padding:3rem 1rem}.gcard{padding:1.5rem}.hero{padding:5rem 1rem 3rem}.hero-stats{flex-direction:column}.hstat{border-right:none;border-bottom:1px solid var(--bd)}.hstat:last-child{border-bottom:none}}
-
-/* GLOW ORBS */
-.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px)}
-.o1{width:600px;height:600px;background:rgba(124,58,237,0.18);top:-200px;left:-150px;animation:float1 8s ease-in-out infinite}
-.o2{width:500px;height:500px;background:rgba(6,182,212,0.12);bottom:-150px;right:-100px;animation:float2 10s ease-in-out infinite}
-.o3{width:350px;height:350px;background:rgba(244,63,94,0.08);top:45%;left:45%;animation:float3 12s ease-in-out infinite}
-@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
-@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-40px)}}
-@keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
-
-/* GLITCH TEXT */
-.glitch{position:relative}
-.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;height:100%;background:transparent;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.glitch::before{background:linear-gradient(135deg,var(--v) 0%,var(--cy) 40%,var(--gr) 100%);-webkit-background-clip:text;left:2px;animation:glitch1 4s infinite;opacity:.7}
-.glitch::after{background:linear-gradient(135deg,var(--cy) 0%,var(--v) 100%);-webkit-background-clip:text;left:-2px;animation:glitch2 4s infinite;opacity:.5}
-@keyframes glitch1{0%,90%,100%{clip-path:none;transform:none}92%{clip-path:inset(20% 0 60% 0);transform:translate(3px,0)}94%{clip-path:inset(50% 0 30% 0);transform:translate(-3px,0)}96%{clip-path:none}}
-@keyframes glitch2{0%,93%,100%{clip-path:none;transform:none}95%{clip-path:inset(10% 0 70% 0);transform:translate(-2px,0)}97%{clip-path:none}}
-
-/* TYPEWRITER */
-.tw::after{content:'|';animation:blink .8s infinite;color:var(--cy)}
+.loading-txt{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:var(--color-text-primary);margin-bottom:8px}
+.loading-sub{font-size:13px;color:var(--color-text-secondary)}
+.score-ring-wrap{display:flex;flex-direction:column;align-items:center;padding:24px 0 16px}
+.score-num{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:700;color:var(--color-text-primary);letter-spacing:-2px;line-height:1}
+.score-label{font-size:13px;color:var(--color-text-secondary);margin-top:4px}
+.score-verdict{display:inline-block;margin-top:10px;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600}
+.verdict-low{background:#FCEBEB;color:#A32D2D;border:0.5px solid #F09595}
+.verdict-mid{background:#FAEEDA;color:#854F0B;border:0.5px solid #EF9F27}
+.verdict-good{background:#EAF3DE;color:#3B6D11;border:0.5px solid #97C459}
+.bar-container{height:14px;background:var(--color-background-secondary);border-radius:20px;overflow:hidden;margin-bottom:4px}
+.bar-fill{height:100%;border-radius:20px;background:#7C3AED;transition:width 1s cubic-bezier(0.4,0,0.2,1)}
+.bar-fill.lime{background:#A3E635}
+.bar-fill.amber{background:#EF9F27}
+.bar-fill.coral{background:#D85A30}
+.skill-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.skill-name{font-size:13px;color:var(--color-text-primary);min-width:140px;font-weight:500}
+.skill-pct{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--color-text-secondary);min-width:36px;text-align:right}
+.missing-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.miss-tag{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;background:#FCEBEB;color:#A32D2D;border:0.5px solid #F09595}
+.add-tag{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;background:#EAF3DE;color:#3B6D11;border:0.5px solid #97C459}
+.tabs{display:flex;gap:0;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:16px}
+.tab{padding:10px 16px;font-size:13px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s}
+.tab.active{color:#7C3AED;border-bottom-color:#7C3AED}
+.cv-section{margin-bottom:16px}
+.cv-sect-head{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--color-text-primary);border-bottom:1.5px solid #7C3AED;padding-bottom:4px;margin-bottom:10px}
+.cv-item{margin-bottom:10px}
+.cv-item-title{font-size:14px;font-weight:600;color:var(--color-text-primary)}
+.cv-item-sub{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.cv-item-bullet{font-size:13px;color:var(--color-text-primary);padding-left:14px;position:relative;line-height:1.5;margin-bottom:2px}
+.cv-item-bullet::before{content:'•';position:absolute;left:0;color:#7C3AED}
+.day-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:14px;margin-bottom:8px}
+.day-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.day-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:#7C3AED18;color:#7C3AED}
+.day-title{font-size:14px;font-weight:600;color:var(--color-text-primary)}
+.day-tasks{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.ats-meter-wrap{margin:16px 0}
+.ats-score-big{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;text-align:center;color:#A3E635;line-height:1;margin-bottom:4px}
+.ats-label{font-size:12px;color:var(--color-text-secondary);text-align:center;margin-bottom:12px}
+.ats-bar-wrap{height:20px;background:var(--color-background-secondary);border-radius:20px;overflow:hidden}
+.ats-bar{height:100%;width:0;background:#A3E635;border-radius:20px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+.res-tabs-content{display:none}
+.res-tabs-content.active{display:block}
+.info-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 10px;border-radius:20px;background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);margin-right:6px;margin-bottom:6px}
+.footer{border-top:0.5px solid var(--color-border-tertiary);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:var(--color-background-primary)}
+.footer-copy{font-size:11px;color:var(--color-text-secondary)}
+.footer-copy strong{color:var(--color-text-primary)}
+.footer-link{font-size:11px;color:#7C3AED;text-decoration:none;display:flex;align-items:center;gap:4px}
+.footer-link:hover{text-decoration:underline}
 </style>
-</head>
-<body>
 
-<!-- SCROLL BAR -->
-<div id="sbar"></div>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Career OS — AI-powered career match, CV builder, and 30-day roadmap tool</h2>
 
-<!-- CANVAS BG -->
-<canvas id="bgCanvas"></canvas>
-
-<!-- ORBS -->
-<div class="orb o1"></div>
-<div class="orb o2"></div>
-<div class="orb o3"></div>
-
-<!-- LOADING -->
-<div class="lov" id="lov">
-  <div class="lring"></div>
-  <div class="ltx">Analysing your profile</div>
-  <div class="lsub" id="lstep">Initialising AI engine...</div>
-  <div class="lbar"><div class="lbfill"></div></div>
-</div>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">⚡ CareerOS <span>v2.0</span></div>
-  <div class="nav-right">
-    <div class="nav-dot"></div>
-    <div class="nav-pill">AI Powered</div>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero" id="top">
-
-  <!-- TOP BADGE -->
-  <div class="hero-eyebrow" style="animation:fadeUp .5s ease both">
-    <span>🤖 AI-Powered Career Engine</span>
-    <span style="width:1px;height:12px;background:rgba(6,182,212,0.3);display:inline-block"></span>
-    <span style="color:var(--gr)">Live</span>
+<div class="app">
+  <div class="header">
+    <div class="brand">Career <span>OS</span></div>
+    <div class="badge">AI-powered · free</div>
   </div>
 
-  <!-- MAIN HEADLINE -->
-  <div style="position:relative;margin-bottom:1.8rem;animation:fadeUp .6s ease .1s both">
-    <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(1rem,2vw,1.1rem);font-weight:500;color:var(--mu);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.8rem;font-family:'JetBrains Mono',monospace">// Your career. Optimised.</div>
-    <h1 class="hero-title" style="margin-bottom:0">
-      Turn your CV into<br>
-      <span class="line2 glitch" data-text="your dream offer.">your dream offer.</span>
-    </h1>
+  <div class="steps-bar">
+    <div class="step-tab active" id="stab-0"><span class="step-num">1</span>details</div>
+    <div class="step-tab" id="stab-1"><span class="step-num">2</span>target</div>
+    <div class="step-tab" id="stab-2"><span class="step-num">3</span>results</div>
   </div>
 
-  <p class="hero-sub" style="animation:fadeUp .6s ease .2s both">Upload your CV or enter your skills. Pick your target role. Get an ATS-perfect resume scored 100/100 and a 30-day action plan — in under 60 seconds.</p>
+  <div class="main">
 
-  <!-- CTA -->
-  <div class="cta-group" style="animation:fadeUp .6s ease .3s both">
-    <button class="btn-main" onclick="scrollToForm()">
-      <span>Analyse My CV</span>
-      <span style="font-size:1.1rem">→</span>
-    </button>
-    <button class="btn-outline" onclick="scrollToForm()">See how it works ↓</button>
-  </div>
-
-  <!-- FLOATING TERMINAL CARD -->
-  <div style="animation:fadeUp .7s ease .4s both;margin-top:4rem;width:100%;max-width:680px">
-    <div style="background:rgba(5,8,16,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;backdrop-filter:blur(30px);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 60px rgba(124,58,237,0.1)">
-      <!-- Terminal header -->
-      <div style="background:rgba(255,255,255,0.04);padding:.75rem 1.2rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid rgba(255,255,255,0.06)">
-        <span style="width:10px;height:10px;border-radius:50%;background:#f43f5e;display:inline-block"></span>
-        <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block"></span>
-        <span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block"></span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:rgba(241,245,249,0.3);margin-left:.5rem">careeros — ai-analysis</span>
-      </div>
-      <!-- Terminal body -->
-      <div style="padding:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:2;text-align:left">
-        <div><span style="color:var(--gr)">$</span> <span style="color:var(--mu)">careeros</span> <span style="color:var(--cyl)">--analyse</span> <span style="color:var(--vll)">cv.pdf</span> <span style="color:var(--cyl)">--role</span> <span style="color:var(--vll)">"Software Engineer"</span></div>
-        <div style="color:rgba(241,245,249,0.25)">────────────────────────────────────</div>
-        <div><span style="color:var(--cy)">✓</span> <span style="color:var(--mu)">CV parsed</span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--gr)">312 tokens extracted</span></div>
-        <div><span style="color:var(--cy)">✓</span> <span style="color:var(--mu)">Role requirements loaded</span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--vll)">Software Engineer @ FAANG</span></div>
-        <div><span style="color:var(--cy)">✓</span> <span style="color:var(--mu)">Skill gap analysis</span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--yw)">4 gaps found</span></div>
-        <div><span style="color:var(--cy)">✓</span> <span style="color:var(--mu)">ATS optimisation</span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--gr)">Score: 100/100</span></div>
-        <div style="color:rgba(241,245,249,0.25)">────────────────────────────────────</div>
-        <div><span style="color:var(--gr)">→</span> <span style="color:var(--tx)">Match: <strong style="color:var(--vll)">78%</strong></span> <span style="color:rgba(241,245,249,0.3)">·</span> <span style="color:var(--tx)">30-day plan ready</span> <span style="color:var(--cy)">█</span><span id="termCursor" style="animation:blink .8s infinite;color:var(--cy)">_</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FEATURE PILLS ROW -->
-  <div style="display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:3rem;animation:fadeUp .7s ease .5s both">
-    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
-      <span style="color:var(--gr)">✓</span> All education levels
-    </div>
-    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
-      <span style="color:var(--gr)">✓</span> Freshers welcome
-    </div>
-    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
-      <span style="color:var(--gr)">✓</span> 100% ATS Score
-    </div>
-    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
-      <span style="color:var(--gr)">✓</span> 30-Day Roadmap
-    </div>
-    <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:999px;padding:.5rem 1.1rem;font-size:.78rem;color:var(--mu)">
-      <span style="color:var(--gr)">✓</span> Free forever
-    </div>
-  </div>
-
-  <!-- STATS ROW -->
-  <div class="hero-stats" style="margin-top:3rem">
-    <div class="hstat"><div class="hstat-n">10K+</div><div class="hstat-l">CVs Optimised</div></div>
-    <div class="hstat"><div class="hstat-n">97%</div><div class="hstat-l">ATS Pass Rate</div></div>
-    <div class="hstat"><div class="hstat-n">30 Days</div><div class="hstat-l">Avg. Placement</div></div>
-    <div class="hstat"><div class="hstat-n">18+</div><div class="hstat-l">All Ages Welcome</div></div>
-  </div>
-
-</section>
-
-<!-- FORM -->
-<section class="sec" id="formSection">
-  <div class="sec-tag">Get Started</div>
-  <h2 class="sec-h">Build your career profile</h2>
-  <p class="sec-p">3 minutes. Every background welcome — fresher, switcher, professional, anything.</p>
-
-  <!-- STEP TRACK -->
-  <div class="steps" id="stepsTrack">
-    <div class="si active" id="si1"><div class="snum">01</div><span>Profile</span></div>
-    <div class="sl" id="sl1"></div>
-    <div class="si" id="si2"><div class="snum">02</div><span>CV / Skills</span></div>
-    <div class="sl" id="sl2"></div>
-    <div class="si" id="si3"><div class="snum">03</div><span>Target</span></div>
-    <div class="sl" id="sl3"></div>
-    <div class="si" id="si4"><div class="snum">04</div><span>Results</span></div>
-  </div>
-
-  <!-- STEP 1 -->
-  <div class="gcard" id="step1">
-    <div class="fg">
-      <div class="fl"><label>Full Name *</label><input type="text" id="fname" placeholder="e.g. Deb Roy"></div>
-      <div class="fl"><label>Email Address *</label><input type="email" id="femail" placeholder="you@email.com"></div>
-      <div class="fl"><label>Age * (18+)</label><input type="number" id="fage" placeholder="18" min="18" max="99"></div>
-      <div class="fl"><label>Current Status *</label>
-        <select id="fpro">
-          <option value="">Select…</option>
-          <option>Student (Undergraduate)</option>
-          <option>Student (Postgraduate)</option>
-          <option>Recent Graduate (0–1 yr)</option>
-          <option>Early Career (1–3 yrs)</option>
-          <option>Mid-Level Professional (3–7 yrs)</option>
-          <option>Senior Professional (7+ yrs)</option>
-          <option>Career Switcher</option>
-          <option>Freelancer / Self-employed</option>
-          <option>Currently Unemployed</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="fl s2"><label>Highest Education</label>
-        <select id="fedu">
-          <option value="">Select…</option>
-          <option>High School / 12th Pass</option>
-          <option>Diploma / Polytechnic</option>
-          <option>B.Sc / B.A / B.Com</option>
-          <option>B.Tech / B.E / BCA</option>
-          <option>MBA / PGDM</option>
-          <option>M.Tech / M.Sc / MCA</option>
-          <option>Ph.D / Research</option>
-          <option>Vocational / Self-taught</option>
-          <option>Other</option>
-        </select>
-      </div>
-    </div>
-    <div class="fnav"><div></div><button class="btn-next" onclick="goStep(2)">Next Step <span>→</span></button></div>
-  </div>
-
-  <!-- STEP 2 -->
-  <div class="gcard" id="step2" style="display:none">
-    <div class="upzone" id="upzone">
-      <input type="file" id="cvFile" accept=".pdf,.doc,.docx" onchange="handleFile(this)">
-      <div class="up-icon">📄</div>
-      <div class="up-title">Drop your CV here</div>
-      <div class="up-sub">PDF · DOC · DOCX — up to 5MB</div>
-      <div id="upok"></div>
-    </div>
-    <div class="div"><div class="div-l"></div><div class="div-t">// or enter skills manually</div><div class="div-l"></div></div>
-    <div class="fl">
-      <label>Skills & Keywords</label>
-      <div class="tagbox" id="tagbox" onclick="document.getElementById('ti').focus()">
-        <input class="ti" id="ti" placeholder="Type a skill → Enter…" onkeydown="handleTag(event)">
-      </div>
-      <div class="tags-h">// e.g. Python, React, Data Analysis, Communication, AWS</div>
-    </div>
-    <div class="fnav">
-      <button class="btn-back" onclick="goStep(1)">← Back</button>
-      <button class="btn-next" onclick="goStep(3)">Next Step →</button>
-    </div>
-  </div>
-
-  <!-- STEP 3 -->
-  <div class="gcard" id="step3" style="display:none">
-    <div class="fl" style="margin-bottom:1.8rem">
-      <label>Target Role</label>
-      <div class="cgrid" id="roleGrid"></div>
-      <input type="text" id="customRole" placeholder="Or type a custom role…" style="margin-top:1rem">
-    </div>
-    <div class="fl" style="margin-bottom:1.8rem">
-      <label>Target Company Type</label>
-      <div class="cgrid" id="coGrid"></div>
-      <input type="text" id="customCo" placeholder="Or type a specific company…" style="margin-top:1rem">
-    </div>
-    <div class="trow">
-      <div class="tog" id="ftog" onclick="toggleF()"><div class="tok"></div></div>
-      <div class="tl">I'm a fresher / no work experience yet</div>
-    </div>
-    <div class="fnav">
-      <button class="btn-back" onclick="goStep(2)">← Back</button>
-      <button class="btn-next" onclick="doAnalyse()">⚡ Analyse My Profile</button>
-    </div>
-  </div>
-</section>
-
-<!-- RESULTS -->
-<section class="sec" id="results">
-  <div class="sec-tag">Your Results</div>
-  <h2 class="sec-h">Profile Analysis</h2>
-
-  <div class="gcard" style="margin-bottom:1.5rem;padding:0;overflow:hidden">
-    <div class="mhero">
-      <div class="ringw">
-        <svg class="rsvg" viewBox="0 0 200 200">
-          <defs>
-            <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#7C3AED"/>
-              <stop offset="50%" stop-color="#06b6d4"/>
-              <stop offset="100%" stop-color="#10b981"/>
-            </linearGradient>
-          </defs>
-          <circle class="rbg" cx="100" cy="100" r="90"/>
-          <circle class="rfill" id="rfill" cx="100" cy="100" r="90"/>
-        </svg>
-        <div class="rc">
-          <div class="rpct" id="rpct">0%</div>
-          <div class="rlb">CV Match</div>
+    <div class="screen active" id="s0">
+      <div class="hero-text">Who are you right now?</div>
+      <div class="hero-sub">Be real with us. We'll help you get there.</div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="label">your current status</div>
+        <div class="seg-row">
+          <div class="seg-btn sel" onclick="selectSeg(this,'status')"><span class="ico">💼</span><span class="lbl">Working pro</span></div>
+          <div class="seg-btn" onclick="selectSeg(this,'status')"><span class="ico">🎓</span><span class="lbl">College student</span></div>
+          <div class="seg-btn" onclick="selectSeg(this,'status')"><span class="ico">🌱</span><span class="lbl">Fresher</span></div>
+          <div class="seg-btn" onclick="selectSeg(this,'status')"><span class="ico">📚</span><span class="lbl">Gap / self-study</span></div>
+        </div>
+        <div class="inp-row">
+          <div class="inp-wrap"><label>Full name *</label><input type="text" id="fname" placeholder="Your name" /></div>
+          <div class="inp-wrap"><label>Email *</label><input type="email" id="femail" placeholder="you@email.com" /></div>
+        </div>
+        <div class="inp-row">
+          <div class="inp-wrap"><label>Age *</label><input type="number" id="fage" placeholder="22" min="18" max="70" /></div>
+          <div class="inp-wrap"><label>City</label><input type="text" id="fcity" placeholder="Kolkata" /></div>
+        </div>
+        <div class="inp-row full">
+          <div class="inp-wrap"><label>Current profession / field</label><input type="text" id="fprof" placeholder="e.g. Software engineer, BCA student, Marketing intern..." /></div>
+        </div>
+        <div class="inp-row full">
+          <div class="inp-wrap"><label>Years of experience</label>
+            <select id="fexp">
+              <option value="fresher">Fresher / 0 years</option>
+              <option value="1">Less than 1 year</option>
+              <option value="1-3">1-3 years</option>
+              <option value="3-5">3-5 years</option>
+              <option value="5+">5+ years</option>
+            </select>
+          </div>
         </div>
       </div>
-      <div class="mverd" id="mverd"></div>
-      <div class="msub" id="msub"></div>
+      <div class="card">
+        <div class="label">upload your cv</div>
+        <div class="upload-box" id="upload-box" onclick="document.getElementById('cv-file').click()">
+          <div class="upload-ico"><i class="ti ti-upload" aria-hidden="true"></i></div>
+          <div class="upload-txt"><strong>Click to upload</strong> your CV / resume</div>
+          <div class="upload-txt" style="font-size:11px;margin-top:4px">PDF, DOCX, or TXT · max 5MB</div>
+        </div>
+        <input type="file" id="cv-file" accept=".pdf,.docx,.txt" style="display:none" onchange="handleFileUpload(this)" />
+        <div class="or-div"><span>or enter keywords instead</span></div>
+        <div class="label">your skills & keywords</div>
+        <div class="keywords-area" id="kw-area" onclick="document.getElementById('kw-in').focus()">
+          <input class="kw-input" id="kw-in" placeholder="Type a skill, press Enter..." />
+        </div>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-top:6px">e.g. Python, React, SQL, Project Management, Communication...</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="goToStep(1)">Next: choose your target <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+      </div>
     </div>
-    <div style="padding:1.5rem 2.5rem 2rem" id="sbwrap"></div>
+
+    <div class="screen" id="s1">
+      <div class="hero-text">What's the dream?</div>
+      <div class="hero-sub">Pick your target role and company. Be ambitious.</div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="label">target role</div>
+        <div class="role-chips" id="role-chips">
+          <div class="chip sel" onclick="selectChip(this,'role')">Software Engineer</div>
+          <div class="chip" onclick="selectChip(this,'role')">Product Manager</div>
+          <div class="chip" onclick="selectChip(this,'role')">Data Scientist</div>
+          <div class="chip" onclick="selectChip(this,'role')">UX Designer</div>
+          <div class="chip" onclick="selectChip(this,'role')">Marketing Manager</div>
+          <div class="chip" onclick="selectChip(this,'role')">Business Analyst</div>
+          <div class="chip" onclick="selectChip(this,'role')">DevOps Engineer</div>
+          <div class="chip" onclick="selectChip(this,'role')">Content Strategist</div>
+          <div class="chip" onclick="selectChip(this,'role')">Finance Analyst</div>
+          <div class="chip" onclick="selectChip(this,'role')">HR Manager</div>
+        </div>
+        <div class="inp-row full" style="margin-top:8px">
+          <div class="inp-wrap"><label>or type your own role</label><input type="text" id="custom-role" placeholder="e.g. Machine Learning Engineer, Growth Hacker..." /></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="label">dream company</div>
+        <div class="company-grid" id="co-grid">
+          <div class="co-btn sel" onclick="selectCo(this)">Google</div>
+          <div class="co-btn" onclick="selectCo(this)">Microsoft</div>
+          <div class="co-btn" onclick="selectCo(this)">Amazon</div>
+          <div class="co-btn" onclick="selectCo(this)">Apple</div>
+          <div class="co-btn" onclick="selectCo(this)">Meta</div>
+          <div class="co-btn" onclick="selectCo(this)">Netflix</div>
+          <div class="co-btn" onclick="selectCo(this)">Infosys</div>
+          <div class="co-btn" onclick="selectCo(this)">TCS</div>
+          <div class="co-btn" onclick="selectCo(this)">Wipro</div>
+          <div class="co-btn" onclick="selectCo(this)">Flipkart</div>
+          <div class="co-btn" onclick="selectCo(this)">Swiggy</div>
+          <div class="co-btn" onclick="selectCo(this)">Razorpay</div>
+        </div>
+        <div class="inp-row full" style="margin-top:8px">
+          <div class="inp-wrap"><label>or enter your own</label><input type="text" id="custom-co" placeholder="e.g. Startup, FAANG, any company name..." /></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="label">any job description? (optional — boosts accuracy)</div>
+        <div class="inp-row full">
+          <div class="inp-wrap"><textarea id="jd-text" placeholder="Paste the job description here for the best match score..."></textarea></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goToStep(0)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
+        <button class="btn btn-lime" onclick="runAnalysis()">Analyse my profile <i class="ti ti-sparkles" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="screen" id="s-loading">
+      <div class="loading-screen">
+        <div class="spinner"></div>
+        <div class="loading-txt" id="loading-msg">Scanning your profile...</div>
+        <div class="loading-sub">Running ATS simulation · Building your roadmap</div>
+      </div>
+    </div>
+
+    <div class="screen" id="s2">
+      <div class="hero-text" style="margin-bottom:4px">Your results are in.</div>
+      <div style="margin-bottom:16px" id="result-chips"></div>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('match')">Match score</div>
+        <div class="tab" onclick="switchTab('cv')">Ideal CV</div>
+        <div class="tab" onclick="switchTab('road')">30-day plan</div>
+      </div>
+      <div class="res-tabs-content active" id="tab-match">
+        <div class="card" style="margin-bottom:12px">
+          <div class="score-ring-wrap">
+            <div class="score-num" id="score-display">0%</div>
+            <div class="score-label">vs. <strong id="co-display">Google</strong> · <strong id="role-display">Software Engineer</strong></div>
+            <div class="score-verdict" id="verdict-badge"></div>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="match-bar" style="width:0%"></div></div>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="label">skill breakdown</div>
+          <div id="skill-breakdown"></div>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="label">what's missing</div>
+          <div class="missing-list" id="missing-tags"></div>
+        </div>
+        <div class="card">
+          <div class="label">what you already have ✓</div>
+          <div class="missing-list" id="have-tags"></div>
+        </div>
+      </div>
+      <div class="res-tabs-content" id="tab-cv">
+        <div class="card" style="margin-bottom:12px">
+          <div class="ats-meter-wrap">
+            <div class="ats-score-big">100</div>
+            <div class="ats-label">ATS compatibility score</div>
+            <div class="ats-bar-wrap"><div class="ats-bar" id="ats-bar"></div></div>
+          </div>
+        </div>
+        <div class="card" id="cv-content"></div>
+        <div class="btn-row" style="margin-top:12px">
+          <button class="btn btn-primary" onclick="sendPrompt('Generate this as a downloadable CV with proper formatting for ATS systems')"><i class="ti ti-download" aria-hidden="true"></i> Export as PDF ↗</button>
+          <button class="btn btn-ghost" onclick="sendPrompt('Customize this CV further based on specific requirements I have')">Customize more ↗</button>
+        </div>
+      </div>
+      <div class="res-tabs-content" id="tab-road">
+        <div class="card" style="margin-bottom:12px">
+          <div class="label">your personalised 30-day sprint</div>
+          <div id="roadmap-content"></div>
+        </div>
+        <div class="btn-row" style="margin-top:12px">
+          <button class="btn btn-primary" onclick="sendPrompt('Create a detailed week-by-week breakdown of my 30-day roadmap with daily tasks')">Get detailed daily tasks ↗</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <div id="alwrap"></div>
-
-  <div class="sec-tag" style="margin-top:4rem">ATS Resume</div>
-  <h2 class="sec-h" style="font-size:1.6rem">Your 100% ATS-Score CV</h2>
-  <div class="ats-section">
-    <div class="ats-badge">✦ ATS Score: 100 / 100 — Ready to Apply</div>
-    <div id="cvout"></div>
-    <button class="btn-main" style="margin-top:2rem" onclick="dlCV()">⬇ Download CV</button>
+  <div class="footer">
+    <div class="footer-copy">© 2026 <strong>CyberDebrup</strong>. All rights reserved.</div>
+    <a class="footer-link" href="https://github.com/CyberDebrup" target="_blank">
+      <i class="ti ti-brand-github" style="font-size:14px" aria-hidden="true"></i> github.com/CyberDebrup
+    </a>
   </div>
-
-  <div class="sec-tag" style="margin-top:5rem">30-Day Roadmap</div>
-  <h2 class="sec-h" style="font-size:1.6rem">Your Personalised Plan</h2>
-  <p class="sec-p" style="margin-bottom:2.5rem">Four weeks. Four phases. Zero guesswork.</p>
-  <div class="rm" id="rmout"></div>
-
-  <div style="margin-top:3rem;text-align:center">
-    <button class="btn-main" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Start Over</button>
-  </div>
-</section>
-
-<footer>
-  <div class="flogo">⚡ CareerOS</div>
-  <div style="margin-bottom:.5rem">Copyright © 2026 <a href="https://github.com/cyberdebrup" target="_blank" style="color:var(--vll);text-decoration:none;font-weight:700">CyberDebrup</a> · All rights reserved · Built with ❤️ for every background</div>
-  <div style="margin-top:.75rem;font-size:.68rem;color:rgba(241,245,249,0.15)">Unauthorised reproduction or redistribution strictly prohibited.</div>
-</footer>
+</div>
 
 <script>
-/* ═══════════════ STATE ═══════════════ */
-let step=1, tags=[], selRole='', selCo='', isFresh=false, cvText='', uploadedName='';
-
-/* ═══════════════ SCROLL ═══════════════ */
-window.addEventListener('scroll',()=>{
-  document.getElementById('sbar').style.transform=`scaleX(${window.scrollY/(document.body.scrollHeight-window.innerHeight)})`;
+let userData={status:'Working pro',keywords:[],cvText:'',role:'Software Engineer',company:'Google',jd:''};
+let aiResult=null;
+function selectSeg(el,type){el.closest('.seg-row').querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');if(type==='status')userData.status=el.querySelector('.lbl').textContent;}
+function selectChip(el){el.closest('.role-chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');userData.role=el.textContent;}
+function selectCo(el){document.querySelectorAll('.co-btn').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');userData.company=el.textContent;}
+const kwIn=document.getElementById('kw-in');
+const kwArea=document.getElementById('kw-area');
+kwIn.addEventListener('keydown',function(e){
+  if(e.key==='Enter'||e.key===','){e.preventDefault();const val=this.value.trim().replace(',','');if(val&&!userData.keywords.includes(val)){userData.keywords.push(val);renderKeywords();}this.value='';}
+  if(e.key==='Backspace'&&!this.value&&userData.keywords.length){userData.keywords.pop();renderKeywords();}
 });
-
-/* ═══════════════ CANVAS GRID ═══════════════ */
-(function(){
-  const canvas=document.getElementById('bgCanvas');
-  const ctx=canvas.getContext('2d');
-  let W,H,dots=[];
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;dots=[];for(let i=0;i<80;i++)dots.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5})}
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    dots.forEach(d=>{
-      d.x+=d.vx;d.y+=d.vy;
-      if(d.x<0||d.x>W)d.vx*=-1;if(d.y<0||d.y>H)d.vy*=-1;
-      ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(124,58,237,0.5)';ctx.fill();
-    });
-    for(let i=0;i<dots.length;i++)for(let j=i+1;j<dots.length;j++){
-      const dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<120){ctx.beginPath();ctx.moveTo(dots[i].x,dots[i].y);ctx.lineTo(dots[j].x,dots[j].y);ctx.strokeStyle=`rgba(124,58,237,${.15*(1-dist/120)})`;ctx.lineWidth=.5;ctx.stroke()}
-    }
-    requestAnimationFrame(draw);
-  }
-  resize();draw();window.addEventListener('resize',resize);
-})();
-
-/* ═══════════════ CARD MOUSE GLOW ═══════════════ */
-document.querySelectorAll('.gcard').forEach(card=>{
-  card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect();
-    card.style.setProperty('--mx',(e.clientX-r.left)+'px');
-    card.style.setProperty('--my',(e.clientY-r.top)+'px');
-  });
-});
-
-/* ═══════════════ NAV ═══════════════ */
-function scrollToForm(){document.getElementById('formSection').scrollIntoView({behavior:'smooth',block:'start'})}
-
-function goStep(n){
-  if(n===2&&!v1())return;
-  if(n===3&&!v2())return;
-  document.getElementById('step'+step).style.display='none';
-  document.getElementById('step'+n).style.display='block';
-  [1,2,3,4].forEach(i=>{
-    const el=document.getElementById('si'+i),ln=document.getElementById('sl'+i);
-    el.className='si';
-    if(i<n){el.classList.add('done');if(ln)ln.classList.add('done')}
-    else if(i===n)el.classList.add('active');
-  });
-  step=n;
-  document.getElementById('formSection').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-/* ═══════════════ VALIDATE ═══════════════ */
-function v1(){
-  if(!document.getElementById('fname').value.trim()){shake('fname');return false}
-  const em=document.getElementById('femail').value.trim();
-  if(!em||!em.includes('@')){shake('femail');return false}
-  const age=parseInt(document.getElementById('fage').value);
-  if(!age||age<18){shake('fage');return false}
-  if(!document.getElementById('fpro').value){shake('fpro');return false}
-  return true;
-}
-function v2(){
-  if(!tags.length&&!cvText){alert('Add at least one skill or upload your CV.');return false}
-  return true;
-}
-function shake(id){
-  const el=document.getElementById(id);
-  el.style.animation='none';
-  el.style.borderColor='var(--pk)';el.style.boxShadow='0 0 0 3px rgba(244,63,94,0.2)';
-  setTimeout(()=>{el.style.borderColor='';el.style.boxShadow=''},1500);
-}
-
-/* ═══════════════ FILE UPLOAD ═══════════════ */
-function handleFile(inp){
-  const f=inp.files[0];if(!f)return;
-  uploadedName=f.name;cvText='Uploaded CV: '+f.name;
-  document.getElementById('upok').innerHTML=`<div class="up-ok">✅ ${f.name} ready</div>`;
-}
-const uz=document.getElementById('upzone');
-uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag')});
-uz.addEventListener('dragleave',()=>uz.classList.remove('drag'));
-uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('drag');const f=e.dataTransfer.files[0];if(f){document.getElementById('cvFile').files=e.dataTransfer.files;handleFile({files:[f]})}});
-
-/* ═══════════════ TAGS ═══════════════ */
-function handleTag(e){
-  if((e.key==='Enter'||e.key===',')&&e.target.value.trim()){
-    e.preventDefault();addTag(e.target.value.trim().replace(/,$/,''));e.target.value='';
-  }
-}
-function addTag(t){
-  if(!t||tags.includes(t))return;tags.push(t);
-  const box=document.getElementById('tagbox'),inp=document.getElementById('ti');
-  const el=document.createElement('div');el.className='tag';
-  el.innerHTML=`${t} <span class="tr" onclick="rmTag('${t}',this)">✕</span>`;
-  box.insertBefore(el,inp);
-}
-function rmTag(t,el){tags=tags.filter(x=>x!==t);el.parentElement.remove()}
-
-/* ═══════════════ CHIPS ═══════════════ */
-const ROLES=['Software Engineer','Data Analyst','Product Manager','UI/UX Designer','DevOps Engineer','Data Scientist','Full Stack Dev','Cybersecurity Analyst','ML Engineer','Business Analyst','Marketing Manager','Content Creator','Cloud Architect','QA Engineer','Graphic Designer'];
-const COS=['FAANG / Big Tech','Startup','MNC / Fortune 500','Government / PSU','Consulting Firm','EdTech','FinTech','HealthTech','Gaming Studio','Agency'];
-
-function buildChips(arr,id,key){
-  const g=document.getElementById(id);
-  arr.forEach(x=>{
-    const c=document.createElement('div');c.className='chip';c.textContent=x;
-    c.onclick=()=>{g.querySelectorAll('.chip').forEach(cc=>cc.classList.remove('sel'));c.classList.add('sel');key==='r'?selRole=x:selCo=x};
-    g.appendChild(c);
+function renderKeywords(){
+  const tags=userData.keywords.map((k,i)=>`<div class="kw-tag">${k}<span class="rm" onclick="removeKw(${i})">×</span></div>`).join('');
+  kwArea.innerHTML=tags+'<input class="kw-input" id="kw-in" placeholder="Type a skill, press Enter..." />';
+  const ni=document.getElementById('kw-in');
+  ni.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===','){e.preventDefault();const v=this.value.trim().replace(',','');if(v&&!userData.keywords.includes(v)){userData.keywords.push(v);renderKeywords();}this.value='';}
+    if(e.key==='Backspace'&&!this.value&&userData.keywords.length){userData.keywords.pop();renderKeywords();}
   });
 }
-buildChips(ROLES,'roleGrid','r');buildChips(COS,'coGrid','c');
+function removeKw(i){userData.keywords.splice(i,1);renderKeywords();}
+function handleFileUpload(inp){
+  if(!inp.files[0])return;
+  const f=inp.files[0];
+  const box=document.getElementById('upload-box');
+  box.classList.add('has-file');
+  box.innerHTML=`<div class="upload-ico" style="color:#3B6D11"><i class="ti ti-check" aria-hidden="true"></i></div><div class="upload-txt"><strong>${f.name}</strong></div><div class="upload-txt" style="font-size:11px;color:#3B6D11">File ready ✓</div>`;
+  const reader=new FileReader();
+  reader.onload=e=>{userData.cvText=e.target.result.slice(0,4000);};
+  reader.readAsText(f);
+}
+function goToStep(n){
+  if(n===1){userData.keywords=userData.keywords.filter(k=>k);const cr=document.getElementById('custom-role').value.trim();if(cr)userData.role=cr;}
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.remove('active','done');if(i<n)t.classList.add('done');if(i===n)t.classList.add('active');});
+  document.getElementById('s'+n).classList.add('active');
+}
+async function runAnalysis(){
+  const cr=document.getElementById('custom-role').value.trim();if(cr)userData.role=cr;
+  const cc=document.getElementById('custom-co').value.trim();if(cc)userData.company=cc;
+  userData.jd=document.getElementById('jd-text').value.trim();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.remove('active','done');if(i<2)t.classList.add('done');if(i===2)t.classList.add('active');});
+  document.getElementById('s-loading').classList.add('active');
+  const msgs=['Scanning your profile...','Running ATS simulation...','Identifying skill gaps...','Building your ideal CV...','Crafting 30-day roadmap...'];
+  let mi=0;
+  const int=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('loading-msg').textContent=msgs[mi];},1400);
+  const prompt=`You are a career coach and ATS expert. Analyze this person and return ONLY a valid JSON object, no markdown, no explanation.
 
-function toggleF(){isFresh=!isFresh;document.getElementById('ftog').classList.toggle('on',isFresh)}
+Person:
+- Name: ${document.getElementById('fname').value||'User'}
+- Status: ${userData.status}
+- Profession: ${document.getElementById('fprof').value||'Not specified'}
+- Experience: ${document.getElementById('fexp').value}
+- Skills/Keywords: ${userData.keywords.join(', ')||'None provided'}
+- CV text (if uploaded): ${userData.cvText?userData.cvText.slice(0,1500):'Not uploaded'}
 
-/* ═══════════════ ANALYSE ═══════════════ */
-async function doAnalyse(){
-  const role=document.getElementById('customRole').value.trim()||selRole;
-  const co=document.getElementById('customCo').value.trim()||selCo;
-  if(!role){alert('Please select or type a target role.');return}
+Target:
+- Role: ${userData.role}
+- Company: ${userData.company}
+- Job description: ${userData.jd?userData.jd.slice(0,800):'Not provided'}
 
-  const lov=document.getElementById('lov');lov.classList.add('show');
-  const steps=['Parsing profile data...','Matching role requirements...','Computing ATS score...','Generating optimised CV...','Building your 30-day plan...','Almost done...'];
-  let si=0;const iv=setInterval(()=>{document.getElementById('lstep').textContent=steps[si++%steps.length]},900);
-
-  const name=document.getElementById('fname').value.trim();
-  const pro=document.getElementById('fpro').value;
-  const edu=document.getElementById('fedu').value;
-  const sk=tags.join(', ')||'General skills';
-
-  const prompt=`You are a world-class career coach and ATS expert. Analyse this person and respond with ONLY valid JSON (no markdown, no backticks, no preamble):
-
-Person: ${name}, ${pro}, Education: ${edu}, Skills: ${sk}, CV uploaded: ${cvText?'Yes':'No'}, Target Role: ${role}, Company Type: ${co||'Any'}, Fresher: ${isFresh}
-
-Return EXACTLY this JSON structure:
-{"matchScore":INTEGER_40_TO_95,"verdict":"one line verdict","verdictSub":"one sentence encouragement mentioning ${role}","skillBars":[{"name":"skill area","score":INTEGER},{"name":"skill area","score":INTEGER},{"name":"skill area","score":INTEGER},{"name":"skill area","score":INTEGER}],"alerts":[{"type":"warn","text":"specific gap"},{"type":"info","text":"helpful tip"}],"cv":{"summary":"2-3 sentence ATS-optimised professional summary for ${role}","experience":["bullet with action verb and metric","bullet 2","bullet 3"],"skills":"comma separated skills","education":"education line","certifications":["cert 1","cert 2"],"keywords":"10 ATS keywords for ${role}"},"roadmap":{"week1":{"theme":"theme name","goal":"goal","tasks":["task","task","task","task","task"]},"week2":{"theme":"theme name","goal":"goal","tasks":["task","task","task","task","task"]},"week3":{"theme":"theme name","goal":"goal","tasks":["task","task","task","task","task"]},"week4":{"theme":"theme name","goal":"goal","tasks":["task","task","task","task","task"]}}}`;
-
-  let data;
+Return this exact JSON structure:
+{
+  "matchScore": <integer 20-85 based on how well they match>,
+  "verdict": "<one of: Needs work | Getting there | Strong match>",
+  "skillBreakdown": [
+    {"skill": "Technical Skills", "score": <0-100>},
+    {"skill": "Domain Knowledge", "score": <0-100>},
+    {"skill": "Communication", "score": <0-100>},
+    {"skill": "Tools & Software", "score": <0-100>},
+    {"skill": "Industry Experience", "score": <0-100>}
+  ],
+  "missing": ["<skill missing for this role>"],
+  "have": ["<skill they have that is relevant>"],
+  "cvSections": {
+    "summary": "<2-3 sentence ATS-optimized professional summary tailored to ${userData.role} at ${userData.company}>",
+    "experience": [{"title":"<role>","company":"<company>","period":"<dates>","bullets":["<achievement bullet with metric>","<achievement bullet>","<achievement bullet>"]}],
+    "skills": ["<skill>"],
+    "education": "<education line>",
+    "projects": [{"name":"<project>","desc":"<ATS-friendly description>"}]
+  },
+  "roadmap": [
+    {"week":"Week 1","days":"Days 1-7","title":"<theme>","tasks":"<2-3 specific actionable tasks>"},
+    {"week":"Week 2","days":"Days 8-14","title":"<theme>","tasks":"<2-3 specific actionable tasks>"},
+    {"week":"Week 3","days":"Days 15-21","title":"<theme>","tasks":"<2-3 specific actionable tasks>"},
+    {"week":"Week 4","days":"Days 22-30","title":"<theme>","tasks":"<2-3 specific actionable tasks>"}
+  ]
+}`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-    const raw=await res.json();
-    const txt=raw.content?.map(b=>b.text||'').join('')||'';
-    data=JSON.parse(txt.replace(/```json|```/g,'').trim());
-  }catch{
-    data={matchScore:74,verdict:"Strong foundation — ready to level up!",verdictSub:`Your profile shows solid potential for ${role}. A few targeted additions will make you stand out.`,skillBars:[{name:"Technical Skills",score:76},{name:"Communication",score:82},{name:"ATS Keywords",score:58},{name:"Portfolio / Projects",score:52}],alerts:[{type:"warn",text:`Missing key ATS keywords for ${role}. Add: algorithms, system design, agile, REST APIs, stakeholder management.`},{type:"info",text:"Add a quantified achievement to each bullet — e.g. 'Reduced load time by 40%' — to stand out from 90% of applicants."}],cv:{summary:`Results-driven ${pro} targeting ${role} roles, leveraging ${sk.split(',').slice(0,3).join(', ')} to deliver measurable impact. ${edu} background combined with a passion for continuous learning and cross-functional collaboration. Proven ability to deliver under deadlines while maintaining high-quality output.`,experience:["Developed and deployed scalable applications improving system performance by 35% and reducing user drop-off","Collaborated with cross-functional teams to ship 3 product features on schedule, receiving positive stakeholder feedback","Automated repetitive workflows reducing manual effort by 6 hours per week using scripting and tooling"],skills:sk||"Communication, Problem-solving, Team collaboration, Analytical thinking",education:`${edu} — 2024`,certifications:["Google Career Certificate (relevant track)","AWS Cloud Practitioner"],keywords:`${role.toLowerCase()}, agile methodology, REST API, problem solving, stakeholder management, data-driven, cross-functional, scalable systems, innovation, ${sk.split(',')[0]||'technical skills'}`},roadmap:{week1:{theme:"Diagnose & Foundation",goal:"Know exactly where you stand",tasks:["Audit your CV against 5 real job descriptions for "+role+" and note gaps","List your top 10 skills and identify 5 skill gaps to close","Optimise your LinkedIn with a keyword-rich headline and summary targeting "+role,"Research salary benchmarks for "+role+" in your city and preferred companies","Create a job tracker spreadsheet: role, company, date applied, status, follow-up"]},week2:{theme:"Build & Upskill",goal:"Close the gap with targeted learning",tasks:["Complete one certification or short course directly relevant to "+role,"Build or update one portfolio project showcasing "+role+" skills with live demo","Rewrite every CV bullet with a strong action verb and a measurable result","Rewrite your LinkedIn summary using 5+ ATS keywords for "+role,"Connect with 10 professionals working in "+role+" on LinkedIn with personalised notes"]},week3:{theme:"Apply & Network",goal:"Get in front of real opportunities",tasks:["Apply to 15–20 positions using your ATS-optimised CV and a tailored cover letter","Send 5 personalised cold messages to recruiters or hiring managers","Attend one virtual or in-person networking event or meetup in your field","Request 2 LinkedIn recommendations from professors, managers, or collaborators","Prepare and practise answers to 10 common "+role+" interview questions using STAR method"]},week4:{theme:"Interview & Negotiate",goal:"Convert opportunities into offers",tasks:["Do 3 mock interviews — record yourself and review body language and clarity","Research company culture, values, and recent news for each upcoming interview","Prepare 5 STAR-method stories covering your top achievements","Review salary negotiation scripts and decide your target, minimum, and walk-away numbers","Follow up on all pending applications with a polite, personalised email"]}}}
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const raw=data.content.map(i=>i.text||'').join('');
+    const clean=raw.replace(/```json|```/g,'').trim();
+    aiResult=JSON.parse(clean);
+  }catch(e){
+    aiResult={matchScore:52,verdict:'Getting there',skillBreakdown:[{skill:'Technical Skills',score:60},{skill:'Domain Knowledge',score:55},{skill:'Communication',score:70},{skill:'Tools & Software',score:45},{skill:'Industry Experience',score:40}],missing:['System Design','DSA','Cloud (AWS/GCP)','Leadership experience','Open source contributions'],have:['Problem solving','Programming fundamentals','Team collaboration','Quick learner'],cvSections:{summary:`Results-driven ${userData.status.toLowerCase()} targeting ${userData.role} at ${userData.company}. Passionate about building scalable solutions with a strong foundation in software engineering principles. Seeking to leverage technical skills and fresh perspective to drive innovation.`,experience:[{title:'Software Developer Intern',company:'Tech Startup',period:'Jan 2024 – Present',bullets:['Built and deployed REST APIs reducing response time by 35%','Collaborated with cross-functional team of 8 to ship 3 product features on time','Wrote unit tests achieving 85% code coverage across 2 microservices']}],skills:['Python','JavaScript','React','SQL','Git','REST APIs','Agile/Scrum'],education:'B.Tech Computer Science · XYZ University · 2024 · CGPA: 8.2',projects:[{name:'E-commerce Platform',desc:'Full-stack web app with React frontend and Node.js backend, handling 500+ concurrent users'}]},roadmap:[{week:'Week 1',days:'Days 1-7',title:'Foundation & audit',tasks:'Review 3 job descriptions for your target role. Identify top 5 missing skills. Set up LinkedIn and update headline with target role keywords.'},{week:'Week 2',days:'Days 8-14',title:'Skill building sprint',tasks:'Complete one online course/certification for top missing skill. Do 2 LeetCode problems daily. Reach out to 5 people in target role on LinkedIn.'},{week:'Week 3',days:'Days 15-21',title:'Build & showcase',tasks:'Start or update a portfolio project using target company tech stack. Write one blog post or LinkedIn article showcasing your expertise. Request 2 LinkedIn recommendations.'},{week:'Week 4',days:'Days 22-30',title:'Apply & network',tasks:'Send 10 tailored applications with your optimized CV. Attend 1 virtual or in-person industry event. Follow up on all pending applications. Track in a spreadsheet.'}]};
   }
-
-  clearInterval(iv);lov.classList.remove('show');
-  renderResults(data,role,name);
+  clearInterval(int);
+  renderResults();
 }
-
-/* ═══════════════ RENDER ═══════════════ */
-function renderResults(d,role,name){
-  document.getElementById('formSection').style.display='none';
-  const res=document.getElementById('results');res.style.display='block';
-  res.scrollIntoView({behavior:'smooth',block:'start'});
-
-  // Ring
-  const circ=2*Math.PI*90,offset=circ*(1-d.matchScore/100);
-  setTimeout(()=>{
-    document.getElementById('rfill').style.strokeDashoffset=offset;
-    animNum(document.getElementById('rpct'),0,d.matchScore,1600,n=>n+'%');
-  },400);
-  document.getElementById('mverd').textContent=d.verdict;
-  document.getElementById('msub').textContent=d.verdictSub;
-
-  // Skill bars
-  const sb=document.getElementById('sbwrap');sb.innerHTML='';
-  d.skillBars.forEach(b=>{
-    sb.innerHTML+=`<div class="sbw"><div class="sbh"><span class="sbn">${b.name}</span><span class="sbp">${b.score}%</span></div><div class="sbtr"><div class="sbfill" data-w="${b.score}"></div></div></div>`;
-  });
-  setTimeout(()=>document.querySelectorAll('.sbfill').forEach(el=>el.style.width=el.dataset.w+'%'),600);
-
-  // Alerts
-  document.getElementById('alwrap').innerHTML=(d.alerts||[]).map(a=>`<div class="al ${a.type==='warn'?'al-w':'al-i'}"><div class="al-ic">${a.type==='warn'?'⚠️':'💡'}</div><div class="al-tx">${a.text}</div></div>`).join('');
-
-  // CV
-  const cv=d.cv;
-  document.getElementById('cvout').innerHTML=`
-    <div class="cvb"><div class="cvbt">Professional Summary</div><div class="cvl">${cv.summary}</div></div>
-    <div class="cvb"><div class="cvbt">Experience / Projects</div>${(cv.experience||[]).map(b=>`<div class="cvbul">${b}</div>`).join('')}</div>
-    <div class="cvb"><div class="cvbt">Core Skills</div><div class="cvl">${cv.skills}</div></div>
-    <div class="cvb"><div class="cvbt">Education</div><div class="cvl">${cv.education}</div></div>
-    <div class="cvb"><div class="cvbt">Certifications to Pursue</div><div class="cvl">${(cv.certifications||[]).join(' · ')}</div></div>
-    <div class="cvb"><div class="cvbt">ATS Keywords Embedded</div><div class="cvl" style="color:var(--vll)">${cv.keywords}</div></div>`;
-
-  // Roadmap
-  const weeks=[{k:'week1',l:'Week 1 · Days 1–7',c:'w1'},{k:'week2',l:'Week 2 · Days 8–14',c:'w2'},{k:'week3',l:'Week 3 · Days 15–21',c:'w3'},{k:'week4',l:'Week 4 · Days 22–30',c:'w4'}];
-  document.getElementById('rmout').innerHTML=weeks.map((w,i)=>{
-    const wk=d.roadmap[w.k]||{};
-    return `<div class="wk ${w.c}"><div class="wsp"><div class="wdt">W${i+1}</div>${i<3?'<div class="wln"></div>':''}</div><div class="wcon"><div class="wtag">${w.l}</div><div class="wh">${wk.theme||''}</div><div class="wg">${wk.goal||''}</div><ul class="wtasks">${(wk.tasks||[]).map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`;
-  }).join('');
+function renderResults(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s2').classList.add('active');
+  const name=document.getElementById('fname').value||'you';
+  document.getElementById('result-chips').innerHTML=`<span class="info-chip"><i class="ti ti-user" aria-hidden="true" style="font-size:13px"></i>${name}</span><span class="info-chip"><i class="ti ti-briefcase" aria-hidden="true" style="font-size:13px"></i>${userData.role}</span><span class="info-chip"><i class="ti ti-building" aria-hidden="true" style="font-size:13px"></i>${userData.company}</span>`;
+  document.getElementById('co-display').textContent=userData.company;
+  document.getElementById('role-display').textContent=userData.role;
+  const score=aiResult.matchScore;
+  let i=0;
+  const counter=setInterval(()=>{i+=2;if(i>=score){i=score;clearInterval(counter);}document.getElementById('score-display').textContent=i+'%';document.getElementById('match-bar').style.width=i+'%';},20);
+  const vb=document.getElementById('verdict-badge');
+  vb.textContent=aiResult.verdict;
+  if(score<40){vb.className='score-verdict verdict-low';}else if(score<65){vb.className='score-verdict verdict-mid';}else{vb.className='score-verdict verdict-good';}
+  const barColors=['','lime','','amber','coral'];
+  document.getElementById('skill-breakdown').innerHTML=aiResult.skillBreakdown.map((s,i)=>`<div class="skill-row"><div class="skill-name">${s.skill}</div><div style="flex:1"><div class="bar-container"><div class="bar-fill ${barColors[i]||''}" style="width:0%" data-w="${s.score}%"></div></div></div><div class="skill-pct">${s.score}%</div></div>`).join('');
+  setTimeout(()=>{document.querySelectorAll('.bar-fill[data-w]').forEach(b=>{b.style.width=b.dataset.w;});},100);
+  document.getElementById('missing-tags').innerHTML=aiResult.missing.map(m=>`<div class="miss-tag"><i class="ti ti-x" style="font-size:11px;vertical-align:-1px" aria-hidden="true"></i> ${m}</div>`).join('');
+  document.getElementById('have-tags').innerHTML=aiResult.have.map(h=>`<div class="add-tag"><i class="ti ti-check" style="font-size:11px;vertical-align:-1px" aria-hidden="true"></i> ${h}</div>`).join('');
+  setTimeout(()=>{const b=document.getElementById('ats-bar');if(b)b.style.width='100%';},400);
+  const cv=aiResult.cvSections;
+  document.getElementById('cv-content').innerHTML=`<div class="cv-section"><div class="cv-sect-head">Professional summary</div><div style="font-size:13px;color:var(--color-text-primary);line-height:1.6">${cv.summary}</div></div><div class="cv-section"><div class="cv-sect-head">Experience</div>${cv.experience.map(e=>`<div class="cv-item"><div class="cv-item-title">${e.title}</div><div class="cv-item-sub">${e.company} · ${e.period}</div>${e.bullets.map(b=>`<div class="cv-item-bullet">${b}</div>`).join('')}</div>`).join('')}</div><div class="cv-section"><div class="cv-sect-head">Skills</div><div class="missing-list">${cv.skills.map(s=>`<div class="add-tag">${s}</div>`).join('')}</div></div><div class="cv-section"><div class="cv-sect-head">Education</div><div style="font-size:13px;color:var(--color-text-primary)">${cv.education}</div></div>${cv.projects&&cv.projects.length?`<div class="cv-section"><div class="cv-sect-head">Projects</div>${cv.projects.map(p=>`<div class="cv-item"><div class="cv-item-title">${p.name}</div><div class="cv-item-bullet">${p.desc}</div></div>`).join('')}</div>`:''}`;
+  document.getElementById('roadmap-content').innerHTML=aiResult.roadmap.map(w=>`<div class="day-card"><div class="day-head"><div class="day-num">${w.days}</div><div class="day-title">${w.week}: ${w.title}</div></div><div class="day-tasks">${w.tasks}</div></div>`).join('');
 }
-
-/* ═══════════════ HELPERS ═══════════════ */
-function animNum(el,from,to,dur,fmt){
-  const s=performance.now();
-  (function step(t){
-    const p=Math.min((t-s)/dur,1),e=p<.5?2*p*p:-1+(4-2*p)*p;
-    el.textContent=fmt(Math.round(from+(to-from)*e));
-    if(p<1)requestAnimationFrame(step);
-  })(performance.now());
-}
-
-/* ═══════════════ DOWNLOAD CV ═══════════════ */
-function dlCV(){
-  const name=document.getElementById('fname').value.trim()||'User';
-  const role=document.getElementById('customRole')?.value.trim()||selRole||'Role';
-  const cvHtml=document.getElementById('cvout').innerHTML;
-  const html=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${name} — ATS CV</title>
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;max-width:740px;margin:40px auto;color:#111;line-height:1.7;padding:0 24px}h1{font-size:22px;color:#7C3AED;border-bottom:3px solid #7C3AED;padding-bottom:8px;margin-bottom:4px}.rl{font-size:12px;color:#555;margin-bottom:24px}.ab{display:inline-block;background:#f0fdf4;border:1px solid #86efac;color:#166534;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:700;margin-bottom:20px}.cvb{margin-bottom:18px;padding:14px 18px;border:1px solid #eee;border-radius:10px;position:relative}.cvb::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#7C3AED,#06b6d4);border-radius:3px 0 0 3px}.cvbt{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7C3AED;font-weight:700;margin-bottom:8px;font-family:monospace}.cvl{font-size:13px;color:#222;line-height:1.65}.cvbul{padding:4px 0 4px 14px;border-left:2px solid #c4b5fd;margin-bottom:5px;font-size:13px;color:#333}.footer{margin-top:40px;padding-top:14px;border-top:1px solid #eee;font-size:10px;color:#aaa;text-align:center}.no-print{text-align:center;margin-top:24px}@media print{.no-print{display:none}body{margin:20px}}</style></head><body>
-<h1>${name}</h1><div class="rl">Target Role: ${role}</div><div class="ab">✦ ATS Score: 100 / 100</div>
-${cvHtml}
-<div class="footer">Generated by CareerOS &nbsp;·&nbsp; Copyright © 2026 CyberDebrup. All rights reserved.</div>
-<div class="no-print"><button onclick="window.print()" style="background:#7C3AED;color:#fff;border:none;padding:10px 28px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700;box-shadow:0 0 20px rgba(124,58,237,0.4)">🖨 Print / Save as PDF</button></div>
-</body></html>`;
-  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=`${name.replace(/\s+/g,'_')}_ATS_CV_CareerOS.html`;
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>{const map=['match','cv','road'];t.classList.toggle('active',map[i]===name);});
+  document.querySelectorAll('.res-tabs-content').forEach(c=>{c.classList.toggle('active',c.id==='tab-'+name);});
+  if(name==='cv'){setTimeout(()=>{const b=document.getElementById('ats-bar');if(b)b.style.width='100%';},200);}
 }
 </script>
-</body>
-</html>
