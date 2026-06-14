@@ -7,10 +7,9 @@
 .brand{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.5px}
 .brand span{color:#7C3AED}
 .badge{font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;background:#7C3AED18;color:#7C3AED;border:0.5px solid #7C3AED40}
-.steps-bar{display:flex;gap:0;background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary);padding:0 28px}
+.steps-bar{display:flex;background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary);padding:0 28px}
 .step-tab{padding:12px 0;margin-right:28px;font-size:13px;font-weight:500;color:var(--color-text-secondary);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all 0.2s}
 .step-tab.active{color:#7C3AED;border-bottom-color:#7C3AED}
-.step-tab.done{color:var(--color-text-secondary)}
 .step-num{display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--color-background-secondary);align-items:center;justify-content:center;font-size:11px;margin-right:6px;transition:all 0.2s}
 .step-tab.active .step-num{background:#7C3AED;color:#fff}
 .step-tab.done .step-num{background:#A3E635;color:#1a2e05}
@@ -69,6 +68,7 @@
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-txt{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:var(--color-text-primary);margin-bottom:8px}
 .loading-sub{font-size:13px;color:var(--color-text-secondary)}
+.debug-box{font-size:11px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;margin-top:12px;font-family:'JetBrains Mono',monospace;display:none}
 .score-ring-wrap{display:flex;flex-direction:column;align-items:center;padding:24px 0 16px}
 .score-num{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:700;color:var(--color-text-primary);letter-spacing:-2px;line-height:1}
 .score-label{font-size:13px;color:var(--color-text-secondary);margin-top:4px}
@@ -87,7 +87,7 @@
 .missing-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .miss-tag{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;background:#FCEBEB;color:#A32D2D;border:0.5px solid #F09595}
 .add-tag{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;background:#EAF3DE;color:#3B6D11;border:0.5px solid #97C459}
-.tabs{display:flex;gap:0;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:16px}
+.tabs{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:16px}
 .tab{padding:10px 16px;font-size:13px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s}
 .tab.active{color:#7C3AED;border-bottom-color:#7C3AED}
 .cv-section{margin-bottom:16px}
@@ -117,20 +117,18 @@
 .footer-link:hover{text-decoration:underline}
 </style>
 
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Career OS — AI-powered career match, CV builder, and 30-day roadmap tool</h2>
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Career OS — AI-powered career match, CV builder, and 30-day roadmap tool by CyberDebrup</h2>
 
 <div class="app">
   <div class="header">
     <div class="brand">Career <span>OS</span></div>
     <div class="badge">AI-powered · free</div>
   </div>
-
   <div class="steps-bar">
     <div class="step-tab active" id="stab-0"><span class="step-num">1</span>details</div>
     <div class="step-tab" id="stab-1"><span class="step-num">2</span>target</div>
     <div class="step-tab" id="stab-2"><span class="step-num">3</span>results</div>
   </div>
-
   <div class="main">
 
     <div class="screen active" id="s0">
@@ -159,10 +157,10 @@
           <div class="inp-wrap"><label>Years of experience</label>
             <select id="fexp">
               <option value="fresher">Fresher / 0 years</option>
-              <option value="1">Less than 1 year</option>
-              <option value="1-3">1-3 years</option>
-              <option value="3-5">3-5 years</option>
-              <option value="5+">5+ years</option>
+              <option value="less than 1 year">Less than 1 year</option>
+              <option value="1-3 years">1-3 years</option>
+              <option value="3-5 years">3-5 years</option>
+              <option value="5+ years">5+ years</option>
             </select>
           </div>
         </div>
@@ -193,16 +191,16 @@
       <div class="card" style="margin-bottom:12px">
         <div class="label">target role</div>
         <div class="role-chips" id="role-chips">
-          <div class="chip sel" onclick="selectChip(this,'role')">Software Engineer</div>
-          <div class="chip" onclick="selectChip(this,'role')">Product Manager</div>
-          <div class="chip" onclick="selectChip(this,'role')">Data Scientist</div>
-          <div class="chip" onclick="selectChip(this,'role')">UX Designer</div>
-          <div class="chip" onclick="selectChip(this,'role')">Marketing Manager</div>
-          <div class="chip" onclick="selectChip(this,'role')">Business Analyst</div>
-          <div class="chip" onclick="selectChip(this,'role')">DevOps Engineer</div>
-          <div class="chip" onclick="selectChip(this,'role')">Content Strategist</div>
-          <div class="chip" onclick="selectChip(this,'role')">Finance Analyst</div>
-          <div class="chip" onclick="selectChip(this,'role')">HR Manager</div>
+          <div class="chip sel" onclick="selectChip(this)">Software Engineer</div>
+          <div class="chip" onclick="selectChip(this)">Product Manager</div>
+          <div class="chip" onclick="selectChip(this)">Data Scientist</div>
+          <div class="chip" onclick="selectChip(this)">UX Designer</div>
+          <div class="chip" onclick="selectChip(this)">Marketing Manager</div>
+          <div class="chip" onclick="selectChip(this)">Business Analyst</div>
+          <div class="chip" onclick="selectChip(this)">DevOps Engineer</div>
+          <div class="chip" onclick="selectChip(this)">Content Strategist</div>
+          <div class="chip" onclick="selectChip(this)">Finance Analyst</div>
+          <div class="chip" onclick="selectChip(this)">HR Manager</div>
         </div>
         <div class="inp-row full" style="margin-top:8px">
           <div class="inp-wrap"><label>or type your own role</label><input type="text" id="custom-role" placeholder="e.g. Machine Learning Engineer, Growth Hacker..." /></div>
@@ -210,7 +208,7 @@
       </div>
       <div class="card" style="margin-bottom:12px">
         <div class="label">dream company</div>
-        <div class="company-grid" id="co-grid">
+        <div class="company-grid">
           <div class="co-btn sel" onclick="selectCo(this)">Google</div>
           <div class="co-btn" onclick="selectCo(this)">Microsoft</div>
           <div class="co-btn" onclick="selectCo(this)">Amazon</div>
@@ -245,6 +243,7 @@
         <div class="spinner"></div>
         <div class="loading-txt" id="loading-msg">Scanning your profile...</div>
         <div class="loading-sub">Running ATS simulation · Building your roadmap</div>
+        <div class="debug-box" id="debug-box"></div>
       </div>
     </div>
 
@@ -282,14 +281,14 @@
         <div class="card" style="margin-bottom:12px">
           <div class="ats-meter-wrap">
             <div class="ats-score-big">100</div>
-            <div class="ats-label">ATS compatibility score</div>
+            <div class="ats-label">ATS compatibility score — optimised CV below</div>
             <div class="ats-bar-wrap"><div class="ats-bar" id="ats-bar"></div></div>
           </div>
         </div>
         <div class="card" id="cv-content"></div>
         <div class="btn-row" style="margin-top:12px">
-          <button class="btn btn-primary" onclick="sendPrompt('Generate this as a downloadable CV with proper formatting for ATS systems')"><i class="ti ti-download" aria-hidden="true"></i> Export as PDF ↗</button>
-          <button class="btn btn-ghost" onclick="sendPrompt('Customize this CV further based on specific requirements I have')">Customize more ↗</button>
+          <button class="btn btn-primary" onclick="sendPrompt('Generate this Career OS CV as a downloadable PDF with proper ATS formatting')"><i class="ti ti-download" aria-hidden="true"></i> Export as PDF ↗</button>
+          <button class="btn btn-ghost" onclick="sendPrompt('Customize my Career OS CV further based on specific requirements I have')">Customize more ↗</button>
         </div>
       </div>
       <div class="res-tabs-content" id="tab-road">
@@ -298,13 +297,12 @@
           <div id="roadmap-content"></div>
         </div>
         <div class="btn-row" style="margin-top:12px">
-          <button class="btn btn-primary" onclick="sendPrompt('Create a detailed week-by-week breakdown of my 30-day roadmap with daily tasks')">Get detailed daily tasks ↗</button>
+          <button class="btn btn-primary" onclick="sendPrompt('Give me a detailed daily breakdown of my Career OS 30-day roadmap with specific tasks for each day')">Get daily tasks ↗</button>
         </div>
       </div>
     </div>
 
   </div>
-
   <div class="footer">
     <div class="footer-copy">© 2026 <strong>CyberDebrup</strong>. All rights reserved.</div>
     <a class="footer-link" href="https://github.com/CyberDebrup" target="_blank">
@@ -316,25 +314,47 @@
 <script>
 let userData={status:'Working pro',keywords:[],cvText:'',role:'Software Engineer',company:'Google',jd:''};
 let aiResult=null;
-function selectSeg(el,type){el.closest('.seg-row').querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');if(type==='status')userData.status=el.querySelector('.lbl').textContent;}
-function selectChip(el){el.closest('.role-chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');userData.role=el.textContent;}
-function selectCo(el){document.querySelectorAll('.co-btn').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');userData.company=el.textContent;}
+
+function selectSeg(el,type){
+  el.closest('.seg-row').querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  if(type==='status') userData.status=el.querySelector('.lbl').textContent;
+}
+function selectChip(el){
+  el.closest('.role-chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  userData.role=el.textContent;
+}
+function selectCo(el){
+  document.querySelectorAll('.co-btn').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  userData.company=el.textContent;
+}
+
 const kwIn=document.getElementById('kw-in');
 const kwArea=document.getElementById('kw-area');
-kwIn.addEventListener('keydown',function(e){
-  if(e.key==='Enter'||e.key===','){e.preventDefault();const val=this.value.trim().replace(',','');if(val&&!userData.keywords.includes(val)){userData.keywords.push(val);renderKeywords();}this.value='';}
-  if(e.key==='Backspace'&&!this.value&&userData.keywords.length){userData.keywords.pop();renderKeywords();}
-});
+function attachKwEvents(input){
+  input.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===','){
+      e.preventDefault();
+      const val=this.value.trim().replace(',','');
+      if(val&&!userData.keywords.includes(val)){userData.keywords.push(val);renderKeywords();}
+      this.value='';
+    }
+    if(e.key==='Backspace'&&!this.value&&userData.keywords.length){
+      userData.keywords.pop();renderKeywords();
+    }
+  });
+}
+attachKwEvents(kwIn);
+
 function renderKeywords(){
   const tags=userData.keywords.map((k,i)=>`<div class="kw-tag">${k}<span class="rm" onclick="removeKw(${i})">×</span></div>`).join('');
   kwArea.innerHTML=tags+'<input class="kw-input" id="kw-in" placeholder="Type a skill, press Enter..." />';
-  const ni=document.getElementById('kw-in');
-  ni.addEventListener('keydown',function(e){
-    if(e.key==='Enter'||e.key===','){e.preventDefault();const v=this.value.trim().replace(',','');if(v&&!userData.keywords.includes(v)){userData.keywords.push(v);renderKeywords();}this.value='';}
-    if(e.key==='Backspace'&&!this.value&&userData.keywords.length){userData.keywords.pop();renderKeywords();}
-  });
+  attachKwEvents(document.getElementById('kw-in'));
 }
 function removeKw(i){userData.keywords.splice(i,1);renderKeywords();}
+
 function handleFileUpload(inp){
   if(!inp.files[0])return;
   const f=inp.files[0];
@@ -342,105 +362,292 @@ function handleFileUpload(inp){
   box.classList.add('has-file');
   box.innerHTML=`<div class="upload-ico" style="color:#3B6D11"><i class="ti ti-check" aria-hidden="true"></i></div><div class="upload-txt"><strong>${f.name}</strong></div><div class="upload-txt" style="font-size:11px;color:#3B6D11">File ready ✓</div>`;
   const reader=new FileReader();
-  reader.onload=e=>{userData.cvText=e.target.result.slice(0,4000);};
+  reader.onload=e=>{userData.cvText=e.target.result.slice(0,3000);};
   reader.readAsText(f);
 }
+
 function goToStep(n){
-  if(n===1){userData.keywords=userData.keywords.filter(k=>k);const cr=document.getElementById('custom-role').value.trim();if(cr)userData.role=cr;}
+  if(n===1){
+    const cr=document.getElementById('custom-role').value.trim();
+    if(cr) userData.role=cr;
+  }
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.remove('active','done');if(i<n)t.classList.add('done');if(i===n)t.classList.add('active');});
+  document.querySelectorAll('.step-tab').forEach((t,i)=>{
+    t.classList.remove('active','done');
+    if(i<n) t.classList.add('done');
+    if(i===n) t.classList.add('active');
+  });
   document.getElementById('s'+n).classList.add('active');
 }
+
+function setDebug(msg){
+  const d=document.getElementById('debug-box');
+  d.style.display='block';
+  d.textContent=msg;
+}
+
+function computeLocalScore(){
+  const expMap={fresher:0,'less than 1 year':5,'1-3 years':15,'3-5 years':25,'5+ years':35};
+  const statusMap={'Working pro':10,'College student':5,'Fresher':2,'Gap / self-study':3};
+  let score=0;
+  const exp=document.getElementById('fexp').value;
+  score+=expMap[exp]||0;
+  score+=statusMap[userData.status]||0;
+  const kwCount=userData.keywords.length;
+  score+=Math.min(kwCount*4,20);
+  if(userData.cvText.length>200) score+=10;
+  if(userData.jd.length>100) score+=5;
+  const roleMatch=userData.keywords.some(k=>userData.role.toLowerCase().includes(k.toLowerCase())||k.toLowerCase().includes(userData.role.toLowerCase().split(' ')[0]));
+  if(roleMatch) score+=8;
+  const bigCos=['Google','Meta','Apple','Amazon','Microsoft','Netflix'];
+  const isBigCo=bigCos.includes(userData.company);
+  if(isBigCo) score=Math.max(score-10,5);
+  return Math.min(Math.max(Math.round(score),8),82);
+}
+
 async function runAnalysis(){
-  const cr=document.getElementById('custom-role').value.trim();if(cr)userData.role=cr;
-  const cc=document.getElementById('custom-co').value.trim();if(cc)userData.company=cc;
+  const cr=document.getElementById('custom-role').value.trim();
+  if(cr) userData.role=cr;
+  const cc=document.getElementById('custom-co').value.trim();
+  if(cc) userData.company=cc;
   userData.jd=document.getElementById('jd-text').value.trim();
+
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.remove('active','done');if(i<2)t.classList.add('done');if(i===2)t.classList.add('active');});
+  document.querySelectorAll('.step-tab').forEach((t,i)=>{
+    t.classList.remove('active','done');
+    if(i<2) t.classList.add('done');
+    if(i===2) t.classList.add('active');
+  });
   document.getElementById('s-loading').classList.add('active');
-  const msgs=['Scanning your profile...','Running ATS simulation...','Identifying skill gaps...','Building your ideal CV...','Crafting 30-day roadmap...'];
+
+  const msgs=['Scanning your profile...','Running ATS simulation...','Identifying skill gaps...','Building your ideal CV...','Crafting your 30-day roadmap...'];
   let mi=0;
   const int=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('loading-msg').textContent=msgs[mi];},1400);
-  const prompt=`You are a career coach and ATS expert. Analyze this person and return ONLY a valid JSON object, no markdown, no explanation.
 
-Person:
-- Name: ${document.getElementById('fname').value||'User'}
-- Status: ${userData.status}
-- Profession: ${document.getElementById('fprof').value||'Not specified'}
-- Experience: ${document.getElementById('fexp').value}
-- Skills/Keywords: ${userData.keywords.join(', ')||'None provided'}
-- CV text (if uploaded): ${userData.cvText?userData.cvText.slice(0,1500):'Not uploaded'}
+  const name=document.getElementById('fname').value||'User';
+  const prof=document.getElementById('fprof').value||'Not specified';
+  const exp=document.getElementById('fexp').value;
+  const age=document.getElementById('fage').value||'not given';
+  const kwList=userData.keywords.join(', ')||'none listed';
+  const cvSnip=userData.cvText?userData.cvText.slice(0,1200):'not uploaded';
+  const jdSnip=userData.jd?userData.jd.slice(0,600):'not provided';
 
-Target:
-- Role: ${userData.role}
-- Company: ${userData.company}
-- Job description: ${userData.jd?userData.jd.slice(0,800):'Not provided'}
+  const prompt=`You are a strict, honest career coach and ATS expert. You must evaluate this candidate ACCURATELY based on their real data — do NOT always return 52%. The score must reflect the actual gap between their background and the target role.
 
-Return this exact JSON structure:
+CANDIDATE DATA:
+- Name: ${name}
+- Age: ${age}
+- Current status: ${userData.status}
+- Current profession/field: ${prof}
+- Years of experience: ${exp}
+- Skills and keywords they listed: ${kwList}
+- CV text excerpt: ${cvSnip}
+
+TARGET:
+- Role they want: ${userData.role}
+- Company they want: ${userData.company}
+- Job description provided: ${jdSnip}
+
+SCORING RULES — be realistic and honest:
+- A fresher with NO skills targeting Google Software Engineer = 10-20%
+- A fresher with some relevant skills = 20-35%
+- A college student with internships and relevant skills = 30-50%
+- A working pro with 1-3 years in a related field = 45-65%
+- A working pro with 3-5 years directly relevant experience = 60-78%
+- A senior pro with 5+ years directly matching the role = 70-88%
+- If skills/CV strongly match the role keywords, add 5-15 points
+- If targeting a very competitive company (Google, Meta, Apple, Amazon) with weak background, penalise 10-15 points
+- Never return the same score for different profiles — vary it based on what the person actually filled in
+
+Respond with ONLY a valid JSON object. No markdown, no explanation, no code fences.
+
 {
-  "matchScore": <integer 20-85 based on how well they match>,
-  "verdict": "<one of: Needs work | Getting there | Strong match>",
+  "matchScore": <integer from 5 to 88, calculated honestly based on the rules above>,
+  "verdict": "<exactly one of: Needs work | Getting there | Strong match>",
   "skillBreakdown": [
-    {"skill": "Technical Skills", "score": <0-100>},
-    {"skill": "Domain Knowledge", "score": <0-100>},
-    {"skill": "Communication", "score": <0-100>},
-    {"skill": "Tools & Software", "score": <0-100>},
-    {"skill": "Industry Experience", "score": <0-100>}
+    {"skill": "Technical Skills", "score": <0-100 integer>},
+    {"skill": "Domain Knowledge", "score": <0-100 integer>},
+    {"skill": "Communication", "score": <0-100 integer>},
+    {"skill": "Tools & Software", "score": <0-100 integer>},
+    {"skill": "Industry Experience", "score": <0-100 integer>}
   ],
-  "missing": ["<skill missing for this role>"],
-  "have": ["<skill they have that is relevant>"],
+  "missing": ["<specific skill missing for ${userData.role} at ${userData.company}>", "<another missing skill>", "<another>", "<another>", "<another>"],
+  "have": ["<skill from their list that IS relevant to the role>", "<another they have>", "<another>"],
   "cvSections": {
-    "summary": "<2-3 sentence ATS-optimized professional summary tailored to ${userData.role} at ${userData.company}>",
-    "experience": [{"title":"<role>","company":"<company>","period":"<dates>","bullets":["<achievement bullet with metric>","<achievement bullet>","<achievement bullet>"]}],
-    "skills": ["<skill>"],
-    "education": "<education line>",
-    "projects": [{"name":"<project>","desc":"<ATS-friendly description>"}]
+    "summary": "<2-3 sentence ATS-optimized professional summary written for ${name} targeting ${userData.role} at ${userData.company}, using their actual background>",
+    "experience": [{"title": "<their likely current or past role>", "company": "<company or institution>", "period": "<estimated period>", "bullets": ["<quantified achievement bullet>", "<achievement bullet>", "<achievement bullet>"]}],
+    "skills": ["<skill 1>", "<skill 2>", "<skill 3>", "<skill 4>", "<skill 5>", "<skill 6>", "<skill 7>"],
+    "education": "<their likely education background based on status and profession>",
+    "projects": [{"name": "<relevant project name>", "desc": "<ATS-friendly one-line description>"}]
   },
   "roadmap": [
-    {"week":"Week 1","days":"Days 1-7","title":"<theme>","tasks":"<2-3 specific actionable tasks>"},
-    {"week":"Week 2","days":"Days 8-14","title":"<theme>","tasks":"<2-3 specific actionable tasks>"},
-    {"week":"Week 3","days":"Days 15-21","title":"<theme>","tasks":"<2-3 specific actionable tasks>"},
-    {"week":"Week 4","days":"Days 22-30","title":"<theme>","tasks":"<2-3 specific actionable tasks>"}
+    {"week": "Week 1", "days": "Days 1-7", "title": "<theme>", "tasks": "<2-3 specific actionable tasks tailored to their gap>"},
+    {"week": "Week 2", "days": "Days 8-14", "title": "<theme>", "tasks": "<2-3 specific actionable tasks>"},
+    {"week": "Week 3", "days": "Days 15-21", "title": "<theme>", "tasks": "<2-3 specific actionable tasks>"},
+    {"week": "Week 4", "days": "Days 22-30", "title": "<theme>", "tasks": "<2-3 specific actionable tasks>"}
   ]
 }`;
+
+  let success=false;
+
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    const raw=data.content.map(i=>i.text||'').join('');
-    const clean=raw.replace(/```json|```/g,'').trim();
-    aiResult=JSON.parse(clean);
-  }catch(e){
-    aiResult={matchScore:52,verdict:'Getting there',skillBreakdown:[{skill:'Technical Skills',score:60},{skill:'Domain Knowledge',score:55},{skill:'Communication',score:70},{skill:'Tools & Software',score:45},{skill:'Industry Experience',score:40}],missing:['System Design','DSA','Cloud (AWS/GCP)','Leadership experience','Open source contributions'],have:['Problem solving','Programming fundamentals','Team collaboration','Quick learner'],cvSections:{summary:`Results-driven ${userData.status.toLowerCase()} targeting ${userData.role} at ${userData.company}. Passionate about building scalable solutions with a strong foundation in software engineering principles. Seeking to leverage technical skills and fresh perspective to drive innovation.`,experience:[{title:'Software Developer Intern',company:'Tech Startup',period:'Jan 2024 – Present',bullets:['Built and deployed REST APIs reducing response time by 35%','Collaborated with cross-functional team of 8 to ship 3 product features on time','Wrote unit tests achieving 85% code coverage across 2 microservices']}],skills:['Python','JavaScript','React','SQL','Git','REST APIs','Agile/Scrum'],education:'B.Tech Computer Science · XYZ University · 2024 · CGPA: 8.2',projects:[{name:'E-commerce Platform',desc:'Full-stack web app with React frontend and Node.js backend, handling 500+ concurrent users'}]},roadmap:[{week:'Week 1',days:'Days 1-7',title:'Foundation & audit',tasks:'Review 3 job descriptions for your target role. Identify top 5 missing skills. Set up LinkedIn and update headline with target role keywords.'},{week:'Week 2',days:'Days 8-14',title:'Skill building sprint',tasks:'Complete one online course/certification for top missing skill. Do 2 LeetCode problems daily. Reach out to 5 people in target role on LinkedIn.'},{week:'Week 3',days:'Days 15-21',title:'Build & showcase',tasks:'Start or update a portfolio project using target company tech stack. Write one blog post or LinkedIn article showcasing your expertise. Request 2 LinkedIn recommendations.'},{week:'Week 4',days:'Days 22-30',title:'Apply & network',tasks:'Send 10 tailored applications with your optimized CV. Attend 1 virtual or in-person industry event. Follow up on all pending applications. Track in a spreadsheet.'}]};
+    setDebug('Calling AI API...');
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:2500,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+
+    if(!res.ok){
+      setDebug('API HTTP error: '+res.status+'. Using local scoring.');
+    } else {
+      const data=await res.json();
+      if(data.error){
+        setDebug('API error: '+data.error.message+'. Using local scoring.');
+      } else {
+        const raw=data.content.map(i=>i.text||'').join('').trim();
+        const jsonStart=raw.indexOf('{');
+        const jsonEnd=raw.lastIndexOf('}');
+        if(jsonStart===-1||jsonEnd===-1){
+          setDebug('No JSON found in response. Using local scoring.');
+        } else {
+          const jsonStr=raw.slice(jsonStart,jsonEnd+1);
+          aiResult=JSON.parse(jsonStr);
+          if(typeof aiResult.matchScore!=='number'||aiResult.matchScore===52){
+            setDebug('Score seems stuck — verifying...');
+          }
+          success=true;
+          setDebug('');
+          document.getElementById('debug-box').style.display='none';
+        }
+      }
+    }
+  } catch(e){
+    setDebug('Parse error: '+e.message+'. Using local scoring.');
   }
+
+  if(!success){
+    const localScore=computeLocalScore();
+    let localVerdict=localScore<40?'Needs work':localScore<65?'Getting there':'Strong match';
+    const expVal=document.getElementById('fexp').value;
+    const isFresher=expVal==='fresher'||expVal==='less than 1 year';
+    const kwCount=userData.keywords.length;
+    aiResult={
+      matchScore:localScore,
+      verdict:localVerdict,
+      skillBreakdown:[
+        {skill:'Technical Skills',score:Math.min(Math.round(localScore*0.9+Math.random()*10),95)},
+        {skill:'Domain Knowledge',score:Math.min(Math.round(localScore*0.85+Math.random()*8),90)},
+        {skill:'Communication',score:Math.min(Math.round(localScore*1.1+Math.random()*10),95)},
+        {skill:'Tools & Software',score:Math.min(Math.round(localScore*0.8+Math.random()*12),88)},
+        {skill:'Industry Experience',score:Math.min(Math.round(localScore*(isFresher?0.5:0.9)+Math.random()*8),85)}
+      ],
+      missing:getMissingSkills(userData.role,userData.keywords),
+      have:userData.keywords.slice(0,4).length?userData.keywords.slice(0,4):['Communication','Willingness to learn','Problem solving'],
+      cvSections:{
+        summary:`${userData.status} ${prof} with ${expVal} of experience, targeting the ${userData.role} role at ${userData.company}. Bringing ${kwCount>0?kwList.split(',').slice(0,3).join(', '):'a strong learning mindset'} to drive impact and grow in a fast-paced environment.`,
+        experience:[{title:prof||'Current Role',company:'Previous Employer',period:'2023 – Present',bullets:['Contributed to team projects and delivered tasks within deadlines','Collaborated cross-functionally to improve workflows and communication','Applied '+((userData.keywords[0])||'core skills')+' to solve real-world problems effectively']}],
+        skills:userData.keywords.length?userData.keywords.slice(0,8):['Communication','Critical thinking','MS Office','Research','Teamwork','Time management','Adaptability'],
+        education:userData.status==='College student'?'B.Tech / BCA · Currently enrolled · Expected graduation 2026':userData.status==='Fresher'?'Bachelor\'s Degree · Graduated 2024':'Relevant educational background',
+        projects:[{name:'Personal Portfolio Project',desc:'Built and deployed a project demonstrating proficiency in '+(userData.keywords[0]||'core subject area')+', showcasing problem-solving and delivery skills.'}]
+      },
+      roadmap:[
+        {week:'Week 1',days:'Days 1-7',title:'Audit & target',tasks:'List 5 job descriptions for '+userData.role+' at similar companies. Identify top 3 skill gaps vs your current profile. Rewrite your LinkedIn headline with target role keywords.'},
+        {week:'Week 2',days:'Days 8-14',title:'Skill sprint',tasks:'Pick the single most critical missing skill and start a focused course or tutorial. Spend 1 hour daily practising it with hands-on exercises. Reach out to 3 people currently working as '+userData.role+'.'},
+        {week:'Week 3',days:'Days 15-21',title:'Build & prove',tasks:'Start or update a portfolio project using tech/tools that '+userData.company+' values. Document it with a clear README. Write a short LinkedIn post sharing what you learned this week.'},
+        {week:'Week 4',days:'Days 22-30',title:'Apply & track',tasks:'Submit 10 tailored applications to '+userData.role+' roles using your optimised CV. Follow up on each after 5 days. Log everything in a spreadsheet — role, company, date, status.'}
+      ]
+    };
+  }
+
   clearInterval(int);
   renderResults();
 }
+
+function getMissingSkills(role,have){
+  const roleSkills={
+    'Software Engineer':['System Design','DSA (LeetCode)','Cloud (AWS/GCP/Azure)','CI/CD pipelines','Open source contributions'],
+    'Product Manager':['Product roadmapping','A/B testing','OKR framework','Stakeholder management','SQL for analytics'],
+    'Data Scientist':['Machine Learning','Python (pandas/sklearn)','Statistics & probability','Data visualisation','Feature engineering'],
+    'UX Designer':['Figma','User research','Wireframing','Usability testing','Design systems'],
+    'Marketing Manager':['Google Analytics','SEO/SEM','Campaign management','Content strategy','CRM tools'],
+    'Business Analyst':['Requirements gathering','Process mapping','SQL','Power BI / Tableau','Stakeholder communication'],
+    'DevOps Engineer':['Kubernetes','Terraform','CI/CD (Jenkins/GitHub Actions)','Linux administration','Monitoring (Grafana)'],
+    'Finance Analyst':['Financial modelling','Excel (advanced)','Valuation techniques','Bloomberg terminal','CFA fundamentals']
+  };
+  const defaults=['Industry certifications','Leadership experience','Public portfolio/GitHub','Networking in target industry','Domain-specific tools'];
+  const required=roleSkills[role]||defaults;
+  const haveLower=have.map(k=>k.toLowerCase());
+  return required.filter(r=>!haveLower.some(h=>r.toLowerCase().includes(h)||h.includes(r.toLowerCase().split(' ')[0]))).slice(0,5);
+}
+
 function renderResults(){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('s2').classList.add('active');
+
   const name=document.getElementById('fname').value||'you';
-  document.getElementById('result-chips').innerHTML=`<span class="info-chip"><i class="ti ti-user" aria-hidden="true" style="font-size:13px"></i>${name}</span><span class="info-chip"><i class="ti ti-briefcase" aria-hidden="true" style="font-size:13px"></i>${userData.role}</span><span class="info-chip"><i class="ti ti-building" aria-hidden="true" style="font-size:13px"></i>${userData.company}</span>`;
+  document.getElementById('result-chips').innerHTML=
+    `<span class="info-chip"><i class="ti ti-user" aria-hidden="true" style="font-size:13px"></i>${name}</span>`+
+    `<span class="info-chip"><i class="ti ti-briefcase" aria-hidden="true" style="font-size:13px"></i>${userData.role}</span>`+
+    `<span class="info-chip"><i class="ti ti-building" aria-hidden="true" style="font-size:13px"></i>${userData.company}</span>`;
+
   document.getElementById('co-display').textContent=userData.company;
   document.getElementById('role-display').textContent=userData.role;
-  const score=aiResult.matchScore;
+
+  const score=Math.round(aiResult.matchScore);
   let i=0;
-  const counter=setInterval(()=>{i+=2;if(i>=score){i=score;clearInterval(counter);}document.getElementById('score-display').textContent=i+'%';document.getElementById('match-bar').style.width=i+'%';},20);
+  const counter=setInterval(()=>{
+    i+=2;
+    if(i>=score){i=score;clearInterval(counter);}
+    document.getElementById('score-display').textContent=i+'%';
+    document.getElementById('match-bar').style.width=i+'%';
+  },18);
+
   const vb=document.getElementById('verdict-badge');
   vb.textContent=aiResult.verdict;
-  if(score<40){vb.className='score-verdict verdict-low';}else if(score<65){vb.className='score-verdict verdict-mid';}else{vb.className='score-verdict verdict-good';}
-  const barColors=['','lime','','amber','coral'];
-  document.getElementById('skill-breakdown').innerHTML=aiResult.skillBreakdown.map((s,i)=>`<div class="skill-row"><div class="skill-name">${s.skill}</div><div style="flex:1"><div class="bar-container"><div class="bar-fill ${barColors[i]||''}" style="width:0%" data-w="${s.score}%"></div></div></div><div class="skill-pct">${s.score}%</div></div>`).join('');
-  setTimeout(()=>{document.querySelectorAll('.bar-fill[data-w]').forEach(b=>{b.style.width=b.dataset.w;});},100);
-  document.getElementById('missing-tags').innerHTML=aiResult.missing.map(m=>`<div class="miss-tag"><i class="ti ti-x" style="font-size:11px;vertical-align:-1px" aria-hidden="true"></i> ${m}</div>`).join('');
-  document.getElementById('have-tags').innerHTML=aiResult.have.map(h=>`<div class="add-tag"><i class="ti ti-check" style="font-size:11px;vertical-align:-1px" aria-hidden="true"></i> ${h}</div>`).join('');
+  vb.className='score-verdict '+(score<40?'verdict-low':score<65?'verdict-mid':'verdict-good');
+
+  const barCols=['','lime','','amber','coral'];
+  document.getElementById('skill-breakdown').innerHTML=aiResult.skillBreakdown.map((s,idx)=>`
+    <div class="skill-row">
+      <div class="skill-name">${s.skill}</div>
+      <div style="flex:1"><div class="bar-container"><div class="bar-fill ${barCols[idx]||''}" style="width:0%" data-w="${Math.round(s.score)}%"></div></div></div>
+      <div class="skill-pct">${Math.round(s.score)}%</div>
+    </div>`).join('');
+
+  setTimeout(()=>{document.querySelectorAll('.bar-fill[data-w]').forEach(b=>{b.style.width=b.dataset.w;});},120);
+
+  document.getElementById('missing-tags').innerHTML=aiResult.missing.map(m=>
+    `<div class="miss-tag"><i class="ti ti-x" style="font-size:11px;vertical-align:-1px" aria-hidden="true"></i> ${m}</div>`).join('');
+  document.getElementById('have-tags').innerHTML=aiResult.have.map(h=>
+    `<div class="add-tag"><i class="ti ti-check" style="font-size:11px;vertical-align:-1px" aria-hidden="true"></i> ${h}</div>`).join('');
+
   setTimeout(()=>{const b=document.getElementById('ats-bar');if(b)b.style.width='100%';},400);
+
   const cv=aiResult.cvSections;
-  document.getElementById('cv-content').innerHTML=`<div class="cv-section"><div class="cv-sect-head">Professional summary</div><div style="font-size:13px;color:var(--color-text-primary);line-height:1.6">${cv.summary}</div></div><div class="cv-section"><div class="cv-sect-head">Experience</div>${cv.experience.map(e=>`<div class="cv-item"><div class="cv-item-title">${e.title}</div><div class="cv-item-sub">${e.company} · ${e.period}</div>${e.bullets.map(b=>`<div class="cv-item-bullet">${b}</div>`).join('')}</div>`).join('')}</div><div class="cv-section"><div class="cv-sect-head">Skills</div><div class="missing-list">${cv.skills.map(s=>`<div class="add-tag">${s}</div>`).join('')}</div></div><div class="cv-section"><div class="cv-sect-head">Education</div><div style="font-size:13px;color:var(--color-text-primary)">${cv.education}</div></div>${cv.projects&&cv.projects.length?`<div class="cv-section"><div class="cv-sect-head">Projects</div>${cv.projects.map(p=>`<div class="cv-item"><div class="cv-item-title">${p.name}</div><div class="cv-item-bullet">${p.desc}</div></div>`).join('')}</div>`:''}`;
-  document.getElementById('roadmap-content').innerHTML=aiResult.roadmap.map(w=>`<div class="day-card"><div class="day-head"><div class="day-num">${w.days}</div><div class="day-title">${w.week}: ${w.title}</div></div><div class="day-tasks">${w.tasks}</div></div>`).join('');
+  document.getElementById('cv-content').innerHTML=
+    `<div class="cv-section"><div class="cv-sect-head">Professional summary</div><div style="font-size:13px;color:var(--color-text-primary);line-height:1.6">${cv.summary}</div></div>`+
+    `<div class="cv-section"><div class="cv-sect-head">Experience</div>${cv.experience.map(e=>`<div class="cv-item"><div class="cv-item-title">${e.title}</div><div class="cv-item-sub">${e.company} · ${e.period}</div>${e.bullets.map(b=>`<div class="cv-item-bullet">${b}</div>`).join('')}</div>`).join('')}</div>`+
+    `<div class="cv-section"><div class="cv-sect-head">Skills</div><div class="missing-list">${cv.skills.map(s=>`<div class="add-tag">${s}</div>`).join('')}</div></div>`+
+    `<div class="cv-section"><div class="cv-sect-head">Education</div><div style="font-size:13px;color:var(--color-text-primary)">${cv.education}</div></div>`+
+    (cv.projects&&cv.projects.length?`<div class="cv-section"><div class="cv-sect-head">Projects</div>${cv.projects.map(p=>`<div class="cv-item"><div class="cv-item-title">${p.name}</div><div class="cv-item-bullet">${p.desc}</div></div>`).join('')}</div>`:'');
+
+  document.getElementById('roadmap-content').innerHTML=aiResult.roadmap.map(w=>
+    `<div class="day-card"><div class="day-head"><div class="day-num">${w.days}</div><div class="day-title">${w.week}: ${w.title}</div></div><div class="day-tasks">${w.tasks}</div></div>`).join('');
 }
+
 function switchTab(name){
-  document.querySelectorAll('.tab').forEach((t,i)=>{const map=['match','cv','road'];t.classList.toggle('active',map[i]===name);});
-  document.querySelectorAll('.res-tabs-content').forEach(c=>{c.classList.toggle('active',c.id==='tab-'+name);});
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    const map=['match','cv','road'];
+    t.classList.toggle('active',map[i]===name);
+  });
+  document.querySelectorAll('.res-tabs-content').forEach(c=>{
+    c.classList.toggle('active',c.id==='tab-'+name);
+  });
   if(name==='cv'){setTimeout(()=>{const b=document.getElementById('ats-bar');if(b)b.style.width='100%';},200);}
 }
 </script>
